@@ -1,7 +1,7 @@
 'use server'
 
 import { prisma } from '@/lib/prisma'
-import { isAuthenticated } from '@/lib/auth'
+import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
@@ -17,8 +17,8 @@ const slotSchema = z.object({
  * Server Action: Récupérer tous les créneaux (protégé)
  */
 export async function getSlots() {
-  const authenticated = await isAuthenticated()
-  if (!authenticated) {
+  const session = await auth()
+  if (!session) {
     redirect('/admin')
   }
 
@@ -33,8 +33,8 @@ export async function getSlots() {
  * Server Action: Créer un créneau (protégé)
  */
 export async function createSlot(formData: FormData) {
-  const authenticated = await isAuthenticated()
-  if (!authenticated) {
+  const session = await auth()
+  if (!session) {
     throw new Error('Non autorisé')
   }
 
@@ -75,8 +75,8 @@ export async function createSlot(formData: FormData) {
  * Server Action: Supprimer un créneau (protégé)
  */
 export async function deleteSlot(id: string) {
-  const authenticated = await isAuthenticated()
-  if (!authenticated) {
+  const session = await auth()
+  if (!session) {
     throw new Error('Non autorisé')
   }
 
@@ -92,8 +92,8 @@ export async function deleteSlot(id: string) {
  * Server Action: Activer/désactiver un créneau (protégé)
  */
 export async function toggleSlotActive(id: string, isActive: boolean) {
-  const authenticated = await isAuthenticated()
-  if (!authenticated) {
+  const session = await auth()
+  if (!session) {
     throw new Error('Non autorisé')
   }
 

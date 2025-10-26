@@ -1,7 +1,7 @@
 'use server'
 
 import { prisma } from '@/lib/prisma'
-import { isAuthenticated } from '@/lib/auth'
+import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
@@ -14,8 +14,8 @@ const emailSchema = z.object({
  * Server Action: Récupérer tous les emails autorisés (protégé)
  */
 export async function getEmails() {
-  const authenticated = await isAuthenticated()
-  if (!authenticated) {
+  const session = await auth()
+  if (!session) {
     redirect('/admin')
   }
 
@@ -32,15 +32,19 @@ export async function getEmails() {
     },
   })
 
-  return emails
+  // Sérialiser les dates pour le Client Component
+  return emails.map(email => ({
+    ...email,
+    addedAt: email.addedAt.toISOString(),
+  }))
 }
 
 /**
  * Server Action: Ajouter un email à la whitelist (protégé)
  */
 export async function addEmail(formData: FormData) {
-  const authenticated = await isAuthenticated()
-  if (!authenticated) {
+  const session = await auth()
+  if (!session) {
     throw new Error('Non autorisé')
   }
 
@@ -68,8 +72,8 @@ export async function addEmail(formData: FormData) {
  * Server Action: Supprimer un email (protégé)
  */
 export async function deleteEmail(id: string) {
-  const authenticated = await isAuthenticated()
-  if (!authenticated) {
+  const session = await auth()
+  if (!session) {
     throw new Error('Non autorisé')
   }
 

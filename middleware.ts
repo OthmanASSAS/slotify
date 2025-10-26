@@ -1,17 +1,11 @@
+import { auth } from './auth'
 import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
-import { cookies } from 'next/headers'
 
-export async function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl
-
-  // Protect /admin/* routes (except /admin login page)
-  if (pathname.startsWith('/admin') && pathname !== '/admin') {
-    const cookieStore = await cookies()
-    const sessionCookie = cookieStore.get('admin_session')
-
-    if (!sessionCookie?.value) {
-      return NextResponse.redirect(new URL('/admin', request.url))
+export default auth((req) => {
+  // Protéger les routes /admin/* (sauf /admin qui est le login)
+  if (req.nextUrl.pathname.startsWith('/admin') && req.nextUrl.pathname !== '/admin') {
+    if (!req.auth) {
+      return Response.redirect(new URL('/admin', req.url))
     }
   }
 
@@ -28,7 +22,7 @@ export async function middleware(request: NextRequest) {
   response.headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
 
   return response
-}
+})
 
 export const config = {
   matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],

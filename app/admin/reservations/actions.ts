@@ -1,15 +1,15 @@
 'use server'
 
 import { prisma } from '@/lib/prisma'
-import { isAuthenticated } from '@/lib/auth'
+import { auth } from '@/auth'
 import { redirect } from 'next/navigation'
 
 /**
  * Server Action: Récupérer toutes les réservations (protégé)
  */
 export async function getReservations() {
-  const authenticated = await isAuthenticated()
-  if (!authenticated) {
+  const session = await auth()
+  if (!session) {
     redirect('/admin')
   }
 
@@ -33,5 +33,12 @@ export async function getReservations() {
     },
   })
 
-  return reservations
+  // Sérialiser les dates pour le Client Component
+  return reservations.map(reservation => ({
+    ...reservation,
+    reservationDate: reservation.reservationDate.toISOString(),
+    createdAt: reservation.createdAt.toISOString(),
+    updatedAt: reservation.updatedAt.toISOString(),
+    cancelledAt: reservation.cancelledAt?.toISOString() || null,
+  }))
 }

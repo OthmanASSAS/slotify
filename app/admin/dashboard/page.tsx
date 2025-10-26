@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { CalendarDays, Clock, Mail, LogOut, Home, BarChart3 } from 'lucide-react'
+import { handleSignOut } from './actions'
 
 export default async function AdminDashboard() {
   return (
@@ -30,7 +31,7 @@ export default async function AdminDashboard() {
                   <span className="hidden sm:inline">Site</span>
                 </Link>
               </Button>
-              <form action="/api/auth/logout" method="POST">
+              <form action={handleSignOut}>
                 <Button
                   type="submit"
                   size="sm"

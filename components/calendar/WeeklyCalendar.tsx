@@ -5,6 +5,7 @@ import { format, addDays, startOfWeek, isSameDay, isAfter, startOfDay } from 'da
 import { fr } from 'date-fns/locale'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { getPublicSlots } from '@/app/actions/slots'
 
 interface TimeSlot {
   id: string
@@ -41,8 +42,7 @@ export default function WeeklyCalendar({ onSlotSelect }: WeeklyCalendarProps) {
 
   const fetchTimeSlots = async () => {
     try {
-      const response = await fetch('/api/slots')
-      const data = await response.json()
+      const data = await getPublicSlots()
       setTimeSlots(data)
     } catch (error) {
       console.error('Error fetching slots:', error)

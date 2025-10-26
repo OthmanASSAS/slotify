@@ -27,6 +27,7 @@ Une application Next.js 15 moderne pour gérer les réservations de places dans 
 
 - **Next.js 15** avec App Router et Turbopack
 - **TypeScript** pour la sécurité du typage
+- **NextAuth v5** (Auth.js) pour l'authentification
 - **Tailwind CSS v4** pour le style
 - **Prisma** comme ORM
 - **SQLite** pour la base de données (développement)
@@ -53,12 +54,28 @@ cd slotify
 # Installer les dépendances
 pnpm install
 
+# Copier le fichier d'environnement
+cp .env.example .env
+
+# Configurer vos variables d'environnement dans .env
+# Générer un AUTH_SECRET sécurisé :
+openssl rand -base64 32
+
 # Initialiser la base de données
 npx prisma migrate dev
 
 # Seed la base de données avec des données de test
 npx prisma db seed
 ```
+
+### Credentials de développement
+
+Les credentials par défaut pour l'environnement de développement sont :
+
+- **Email** : `admin@slotify.com`
+- **Password** : `slotify123`
+
+> ⚠️ **Important** : Ces credentials sont uniquement pour le développement local. En production, utilisez des credentials différents et sécurisés via les variables d'environnement `SEED_ADMIN_EMAIL` et `SEED_ADMIN_PASSWORD`.
 
 ### Démarrage du serveur de développement
 

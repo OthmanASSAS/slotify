@@ -8,12 +8,17 @@ async function main() {
 
   // 1. Create admin user
   console.log("Creating admin user...");
+  const adminEmail = process.env.SEED_ADMIN_EMAIL || "admin@example.com"
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD || "changeme"
+
   const admin = await prisma.admin.upsert({
-    where: { email: "admin@slotify.com" },
-    update: {},
+    where: { email: adminEmail },
+    update: {
+      password: await hash(adminPassword, 10),
+    },
     create: {
-      email: "admin@slotly.com",
-      password: await hash("Hello1!!", 10),
+      email: adminEmail,
+      password: await hash(adminPassword, 10),
     },
   });
   console.log(`✓ Admin created: ${admin.email}`);
@@ -73,8 +78,8 @@ async function main() {
 
   console.log("✅ Seed completed!");
   console.log("\n📝 Admin credentials:");
-  console.log("   Email: admin@slotly.com");
-  console.log("   Password: admin123");
+  console.log(`   Email: ${adminEmail}`);
+  console.log("   Password: (check your .env file)");
 }
 
 main()

@@ -3,42 +3,30 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { authenticate } from './actions'
 
 export default function AdminLoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      })
+      const formData = new FormData(e.currentTarget)
+      const result = await authenticate(formData)
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Erreur lors de la connexion')
-      }
-
-      // Redirect to dashboard
-      router.push('/admin/dashboard')
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        setError(err.message)
+      if (result.error) {
+        setError(result.error)
       } else {
-        setError('Une erreur est survenue')
+        router.push('/admin/dashboard')
+        router.refresh()
       }
+    } catch (err: unknown) {
+      setError('Une erreur est survenue')
     } finally {
       setLoading(false)
     }
@@ -61,11 +49,10 @@ export default function AdminLoginPage() {
               <input
                 type="email"
                 id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                name="email"
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="admin@slotly.com"
+                placeholder="admin@slotify.com"
               />
             </div>
 
@@ -76,8 +63,7 @@ export default function AdminLoginPage() {
               <input
                 type="password"
                 id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="••••••••"

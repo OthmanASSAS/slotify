@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Admin users who can manage the system
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // Hashed with bcrypt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Allowed emails that can make reservations
+model AllowedEmail {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  addedAt      DateTime      @default(now())
+  reservations Reservation[]
+}
+
+// Time slots configuration (e.g., Monday 9h-13h, Tuesday 14h-17h)
+model TimeSlot {
+  id           String        @id @default(cuid())
+  dayOfWeek    Int           // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  startTime    String        // Format: "HH:mm" (e.g., "09:00")
+  endTime      String        // Format: "HH:mm" (e.g., "13:00")
+  maxCapacity  Int           @default(25)
+  isActive     Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  reservations Reservation[]
+
+  @@unique([dayOfWeek, startTime, endTime])
+}
+
+// Individual reservations
+model Reservation {
+  id               String        @id @default(cuid())
+  allowedEmail     AllowedEmail  @relation(fields: [allowedEmailId], references: [id])
+  allowedEmailId   String
+  timeSlot         TimeSlot      @relation(fields: [timeSlotId], references: [id])
+  timeSlotId       String
+  reservationDate  DateTime      // The specific date for this reservation
+  cancellationCode String        @unique // Unique code to cancel the reservation
+  cancelledAt      DateTime?     // Null if not cancelled
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@unique([allowedEmailId, timeSlotId, reservationDate])
+  @@index([reservationDate])
+  @@index([cancellationCode])
+}

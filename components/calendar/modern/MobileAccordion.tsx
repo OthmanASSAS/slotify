@@ -1,0 +1,175 @@
+/**
+ * MobileAccordion - Vue mobile/tablet avec accordéon vertical
+ * Design moderne avec pastel doux et bordures fines
+ */
+
+import React, { useState } from 'react'
+import { format } from 'date-fns'
+import { fr } from 'date-fns/locale'
+import { ChevronDown, ChevronRight, Clock, Users, CheckCircle2 } from 'lucide-react'
+import { Badge } from '@/components/ui/badge'
+import type { DayInfo, SlotDisplayInfo, TimeSlot } from './types'
+import { getAvailabilityBadgeConfig } from './utils'
+
+type MobileAccordionProps = {
+  readonly dayInfos: DayInfo[]
+  readonly slotsMap: Map<string, SlotDisplayInfo[]>
+  readonly onSlotClick: (slot: TimeSlot, date: Date) => void
+}
+
+export const MobileAccordion: React.FC<MobileAccordionProps> = ({
+  dayInfos,
+  slotsMap,
+  onSlotClick,
+}) => {
+  // Ouvrir le premier jour avec des créneaux par défaut
+  const firstDayWithSlots = dayInfos.find(
+    day => (slotsMap.get(day.date.toISOString()) || []).length > 0
+  )
+  const [openDayId, setOpenDayId] = useState<string | null>(
+    firstDayWithSlots?.date.toISOString() || null
+  )
+
+  const toggleDay = (dayId: string) => {
+    setOpenDayId(prev => (prev === dayId ? null : dayId))
+  }
+
+  return (
+    <div className="lg:hidden space-y-3 pb-32">
+      {dayInfos.map(day => {
+        const dayId = day.date.toISOString()
+        const slots = slotsMap.get(dayId) || []
+        const isOpen = openDayId === dayId
+        const selectedCount = slots.filter(s => s.isSelected).length
+
+        // Skip past days without slots
+        if (day.isPast && slots.length === 0) return null
+
+        return (
+          <div
+            key={dayId}
+            className={`
+              rounded-xl border overflow-hidden transition-all duration-200
+              ${day.isToday
+                ? 'border-violet-200 bg-gradient-to-br from-violet-50/80 via-purple-50/80 to-pink-50/80 shadow-sm'
+                : day.isPast
+                ? 'border-gray-200/50 bg-gray-50/50 opacity-70'
+                : 'border-violet-100 bg-white hover:border-violet-200 hover:shadow-sm'
+              }
+            `}
+          >
+            {/* Accordion Header */}
+            <button
+              onClick={() => slots.length > 0 && toggleDay(dayId)}
+              disabled={slots.length === 0}
+              className="w-full p-4 flex items-center justify-between transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                {slots.length > 0 ? (
+                  isOpen ? (
+                    <ChevronDown className="h-5 w-5 text-violet-500" />
+                  ) : (
+                    <ChevronRight className="h-5 w-5 text-violet-500" />
+                  )
+                ) : (
+                  <div className="w-5 h-5" />
+                )}
+
+                <div className="text-left">
+                  <div className={`text-sm font-medium uppercase tracking-wide ${day.isToday ? 'text-violet-600' : 'text-gray-600'}`}>
+                    {format(day.date, 'EEEE', { locale: fr })}
+                  </div>
+                  <div className={`text-xl font-bold ${day.isToday ? 'text-violet-900' : 'text-gray-900'}`}>
+                    {format(day.date, 'dd MMMM yyyy', { locale: fr })}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                {day.isToday && (
+                  <Badge className="bg-violet-400 text-white hover:bg-violet-500 border-violet-300">
+                    Aujourd&apos;hui
+                  </Badge>
+                )}
+                {selectedCount > 0 && (
+                  <Badge className="bg-emerald-400 text-white hover:bg-emerald-500 border-emerald-300">
+                    {selectedCount}
+                  </Badge>
+                )}
+                {slots.length === 0 && (
+                  <Badge variant="secondary" className="text-gray-500 border-gray-200">
+                    Aucun créneau
+                  </Badge>
+                )}
+              </div>
+            </button>
+
+            {/* Accordion Content */}
+            {isOpen && slots.length > 0 && (
+              <div className="border-t border-violet-100 bg-white/50 p-3 space-y-2 max-h-[400px] overflow-y-auto">
+                {slots.map(slot => {
+                  const badge = getAvailabilityBadgeConfig(slot.availabilityStatus)
+
+                  return (
+                    <button
+                      key={slot.id}
+                      onClick={() => !slot.isDisabled && onSlotClick(slot, day.date)}
+                      disabled={slot.isDisabled}
+                      className={`
+                        w-full p-3.5 rounded-xl border transition-all duration-200 text-left
+                        ${slot.isSelected
+                          ? 'border-violet-400 bg-gradient-to-br from-violet-50 to-purple-50 ring-2 ring-violet-300 ring-offset-1 scale-[1.01] shadow-md'
+                          : slot.isDisabled
+                          ? 'border-gray-200/50 bg-gray-50/50 cursor-not-allowed opacity-60'
+                          : 'border-violet-100 bg-white hover:border-violet-300 hover:shadow-sm active:scale-[0.99]'
+                        }
+                      `}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        {/* Time */}
+                        <div className="flex items-center gap-2">
+                          <Clock className={`h-4 w-4 ${slot.isSelected ? 'text-violet-500' : 'text-gray-500'}`} />
+                          <span className={`font-semibold text-base ${slot.isSelected ? 'text-violet-900' : 'text-gray-900'}`}>
+                            {slot.startTime} - {slot.endTime}
+                          </span>
+                        </div>
+
+                        {/* Selected indicator */}
+                        {slot.isSelected && (
+                          <CheckCircle2 className="h-5 w-5 text-violet-500" />
+                        )}
+                      </div>
+
+                      {/* Availability */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Users className="h-4 w-4 text-gray-400" />
+                          <span className="text-sm text-gray-600">
+                            <span className="font-semibold text-gray-900">{slot.availability.available}</span>
+                            <span className="text-gray-400">/{slot.availability.capacity}</span> places
+                          </span>
+                        </div>
+
+                        {!slot.isDisabled && (
+                          <Badge className={`${badge.className} text-xs`}>
+                            {badge.icon}
+                          </Badge>
+                        )}
+
+                        {slot.isDisabled && slot.availability.available === 0 && (
+                          <Badge className="bg-rose-400 hover:bg-rose-500 text-white text-xs">
+                            Complet
+                          </Badge>
+                        )}
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        )
+      })}
+    </div>
+  )
+}

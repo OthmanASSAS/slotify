@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card } from '@/components/ui/card'
 import { Calendar, Clock, AlertCircle } from 'lucide-react'
+import { createReservation } from '@/app/actions/reservations'
 
 interface SelectedSlot {
   slotId: string
@@ -41,29 +42,23 @@ export default function ReservationForm({ slots, onSuccess, onCancel }: Reservat
     setError('')
 
     try {
-      // For now, we'll book the first slot only
-      // TODO: Update API to handle multiple reservations
+      // Pour l'instant, on réserve seulement le premier créneau
+      // TODO: Gérer la réservation de plusieurs créneaux
       const firstSlot = slots[0]
 
-      const response = await fetch('/api/reservations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          timeSlotId: firstSlot.slotId,
-          reservationDate: firstSlot.date.toISOString(),
-        }),
-      })
+      const result = await createReservation(
+        email,
+        firstSlot.slotId,
+        firstSlot.date
+      )
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Erreur lors de la réservation')
+      if (!result.success) {
+        setError(result.error)
+        setLoading(false)
+        return
       }
 
-      onSuccess(data.cancellationCode)
+      onSuccess(result.cancellationCode)
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message)

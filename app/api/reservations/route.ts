@@ -72,10 +72,14 @@ export async function POST(req: Request) {
       )
     }
 
-    // 4. Check if reservation date is in the past
-    if (date < new Date()) {
+    // 4. Check if reservation date+time is in the past
+    const slotDateTime = new Date(date)
+    const [hours, minutes] = timeSlot.startTime.split(':').map(Number)
+    slotDateTime.setHours(hours, minutes, 0, 0)
+
+    if (slotDateTime < new Date()) {
       return NextResponse.json(
-        { error: 'Impossible de réserver dans le passé' },
+        { error: 'Impossible de réserver un créneau passé' },
         { status: 400 }
       )
     }

@@ -1,11 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { format, addDays, startOfWeek, isSameDay, isAfter, startOfDay } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { Button } from '@/components/ui/button'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { getPublicSlots } from '@/app/actions/slots'
+import { getPublicSlots, getWeekAvailability } from '@/app/actions/slots'
 
 interface TimeSlot {
   id: string
@@ -25,20 +25,26 @@ interface SelectedSlot {
 
 interface WeeklyCalendarProps {
   onSlotSelect: (slots: SelectedSlot[]) => void
+  refreshTrigger?: number // Utilisé pour forcer un refresh depuis le parent
 }
 
 const dayNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam']
 const HOURS = Array.from({ length: 16 }, (_, i) => i + 8) // 8h to 23h
 
-export default function WeeklyCalendar({ onSlotSelect }: WeeklyCalendarProps) {
+export default function WeeklyCalendar({ onSlotSelect, refreshTrigger }: WeeklyCalendarProps) {
   const [currentWeekStart, setCurrentWeekStart] = useState<Date>(startOfWeek(new Date(), { weekStartsOn: 1 }))
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([])
+  const [availability, setAvailability] = useState<Record<string, { available: number; capacity: number }>>({})
   const [loading, setLoading] = useState(true)
   const [selectedSlots, setSelectedSlots] = useState<SelectedSlot[]>([])
 
-  useEffect(() => {
-    fetchTimeSlots()
-  }, [])
+  const getDaysOfWeek = useCallback(() => {
+    const days = []
+    for (let i = 0; i < 7; i++) {
+      days.push(addDays(currentWeekStart, i))
+    }
+    return days
+  }, [currentWeekStart])
 
   const fetchTimeSlots = async () => {
     try {
@@ -51,13 +57,23 @@ export default function WeeklyCalendar({ onSlotSelect }: WeeklyCalendarProps) {
     }
   }
 
-  const getDaysOfWeek = () => {
-    const days = []
-    for (let i = 0; i < 7; i++) {
-      days.push(addDays(currentWeekStart, i))
+  const fetchAvailability = useCallback(async () => {
+    try {
+      const weekDates = getDaysOfWeek()
+      const data = await getWeekAvailability(weekDates)
+      setAvailability(data)
+    } catch (error) {
+      console.error('Error fetching availability:', error)
     }
-    return days
-  }
+  }, [getDaysOfWeek])
+
+  useEffect(() => {
+    fetchTimeSlots()
+  }, [])
+
+  useEffect(() => {
+    fetchAvailability()
+  }, [fetchAvailability, refreshTrigger])
 
   const getSlotForTime = (dayOfWeek: number, hour: number): TimeSlot | null => {
     return timeSlots.find(slot => {
@@ -199,8 +215,14 @@ export default function WeeklyCalendar({ onSlotSelect }: WeeklyCalendarProps) {
                 const isPast = !isAfter(day, today) && !isSameDay(day, today)
                 const isSelected = slot && isSlotSelected(day, hour, slot.id)
                 const isToday = isSameDay(day, today)
-                const availableSlots = 20 // TODO: Get from API
-                const percentage = slot ? (availableSlots / slot.maxCapacity) * 100 : 0
+
+                // Récupérer la disponibilité réelle depuis l'API
+                const dateKey = startOfDay(day).toISOString()
+                const availabilityKey = slot ? `${slot.id}-${dateKey}` : ''
+                const slotAvailability = availabilityKey ? availability[availabilityKey] : null
+                const availableSlots = slotAvailability?.available ?? 0
+                const capacity = slotAvailability?.capacity ?? slot?.maxCapacity ?? 0
+                const percentage = capacity > 0 ? (availableSlots / capacity) * 100 : 0
 
                 return (
                   <div
@@ -228,7 +250,7 @@ export default function WeeklyCalendar({ onSlotSelect }: WeeklyCalendarProps) {
                             : 'bg-gradient-to-br from-red-400 to-red-600'}
                         `}></div>
                         <div className={`text-[10px] font-bold text-center hidden sm:block ${isSelected ? 'text-white' : 'text-slate-700'}`}>
-                          {availableSlots}/{slot.maxCapacity}
+                          {availableSlots}/{capacity}
                         </div>
                       </div>
                     )}

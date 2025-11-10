@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import WeeklyCalendar from "@/components/calendar/WeeklyCalendar";
+import { ModernCalendar } from "@/components/calendar/modern";
 import ReservationForm from "@/components/forms/ReservationForm";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -27,6 +27,7 @@ interface SelectedSlot {
 export default function HomePage() {
   const [selectedSlots, setSelectedSlots] = useState<SelectedSlot[]>([]);
   const [cancellationCode, setCancellationCode] = useState<string | null>(null);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const handleSlotSelect = (slots: SelectedSlot[]) => {
     setSelectedSlots(slots);
@@ -35,6 +36,7 @@ export default function HomePage() {
   const handleReservationSuccess = (code: string) => {
     setCancellationCode(code);
     setSelectedSlots([]);
+    setRefreshTrigger(prev => prev + 1); // Déclencher un refresh du calendrier
   };
 
   const handleCopyCode = () => {
@@ -116,7 +118,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <WeeklyCalendar onSlotSelect={handleSlotSelect} />
+        <ModernCalendar onSlotSelect={handleSlotSelect} refreshTrigger={refreshTrigger} />
 
         {selectedSlots.length > 0 && (
           <ReservationForm

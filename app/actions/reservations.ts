@@ -160,7 +160,7 @@ export async function cancelReservation(
       }
     }
 
-    if (reservation.status === 'CANCELLED') {
+    if (reservation.cancelledAt) {
       return {
         success: false,
         error: 'Cette réservation est déjà annulée',
@@ -169,7 +169,7 @@ export async function cancelReservation(
 
     await prisma.reservation.update({
       where: { id: reservation.id },
-      data: { status: 'CANCELLED' },
+      data: { cancelledAt: new Date() },
     })
 
     return { success: true }

@@ -28,8 +28,8 @@ import type { SlotDisplayInfo } from './types'
 const LoadingState: React.FC = () => (
   <div className="flex items-center justify-center py-20">
     <div className="text-center space-y-4">
-      <div className="w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full animate-spin mx-auto" />
-      <p className="text-sm text-muted-foreground">
+      <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto" />
+      <p className="text-sm text-gray-600">
         Chargement des créneaux...
       </p>
     </div>
@@ -49,7 +49,7 @@ const ErrorState: React.FC<{ error: Error }> = ({ error }) => (
       <p className="text-sm text-gray-600">{error.message}</p>
       <button
         onClick={() => window.location.reload()}
-        className="px-4 py-2 bg-violet-500 text-white rounded-lg hover:bg-violet-600 transition-colors"
+        className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
       >
         Réessayer
       </button>

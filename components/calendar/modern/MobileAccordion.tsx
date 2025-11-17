@@ -51,10 +51,10 @@ export const MobileAccordion: React.FC<MobileAccordionProps> = ({
             className={`
               rounded-xl border overflow-hidden transition-all duration-200
               ${day.isToday
-                ? 'border-violet-200 bg-gradient-to-br from-violet-50/80 via-purple-50/80 to-pink-50/80 shadow-sm'
+                ? 'border-blue-200 bg-blue-50 shadow-sm'
                 : day.isPast
                 ? 'border-gray-200/50 bg-gray-50/50 opacity-70'
-                : 'border-violet-100 bg-white hover:border-violet-200 hover:shadow-sm'
+                : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
               }
             `}
           >
@@ -67,19 +67,19 @@ export const MobileAccordion: React.FC<MobileAccordionProps> = ({
               <div className="flex items-center gap-3">
                 {slots.length > 0 ? (
                   isOpen ? (
-                    <ChevronDown className="h-5 w-5 text-violet-500" />
+                    <ChevronDown className="h-5 w-5 text-blue-600" />
                   ) : (
-                    <ChevronRight className="h-5 w-5 text-violet-500" />
+                    <ChevronRight className="h-5 w-5 text-blue-600" />
                   )
                 ) : (
                   <div className="w-5 h-5" />
                 )}
 
                 <div className="text-left">
-                  <div className={`text-sm font-medium uppercase tracking-wide ${day.isToday ? 'text-violet-600' : 'text-gray-600'}`}>
+                  <div className={`text-sm font-medium uppercase tracking-wide ${day.isToday ? 'text-blue-600' : 'text-gray-600'}`}>
                     {format(day.date, 'EEEE', { locale: fr })}
                   </div>
-                  <div className={`text-xl font-bold ${day.isToday ? 'text-violet-900' : 'text-gray-900'}`}>
+                  <div className={`text-xl font-bold ${day.isToday ? 'text-gray-900' : 'text-gray-900'}`}>
                     {format(day.date, 'dd MMMM yyyy', { locale: fr })}
                   </div>
                 </div>
@@ -87,12 +87,12 @@ export const MobileAccordion: React.FC<MobileAccordionProps> = ({
 
               <div className="flex items-center gap-2">
                 {day.isToday && (
-                  <Badge className="bg-violet-400 text-white hover:bg-violet-500 border-violet-300">
+                  <Badge className="bg-blue-600 text-white hover:bg-blue-700 border-blue-500">
                     Aujourd&apos;hui
                   </Badge>
                 )}
                 {selectedCount > 0 && (
-                  <Badge className="bg-emerald-400 text-white hover:bg-emerald-500 border-emerald-300">
+                  <Badge className="bg-emerald-500 text-white hover:bg-emerald-600 border-emerald-400">
                     {selectedCount}
                   </Badge>
                 )}
@@ -106,7 +106,7 @@ export const MobileAccordion: React.FC<MobileAccordionProps> = ({
 
             {/* Accordion Content */}
             {isOpen && slots.length > 0 && (
-              <div className="border-t border-violet-100 bg-white/50 p-3 space-y-2 max-h-[400px] overflow-y-auto">
+              <div className="border-t border-gray-200 bg-white/50 p-3 space-y-2 max-h-[400px] overflow-y-auto">
                 {slots.map(slot => {
                   const badge = getAvailabilityBadgeConfig(slot.availabilityStatus)
 
@@ -118,25 +118,25 @@ export const MobileAccordion: React.FC<MobileAccordionProps> = ({
                       className={`
                         w-full p-3.5 rounded-xl border transition-all duration-200 text-left
                         ${slot.isSelected
-                          ? 'border-violet-400 bg-gradient-to-br from-violet-50 to-purple-50 ring-2 ring-violet-300 ring-offset-1 scale-[1.01] shadow-md'
+                          ? 'border-blue-400 bg-blue-50 shadow-sm'
                           : slot.isDisabled
                           ? 'border-gray-200/50 bg-gray-50/50 cursor-not-allowed opacity-60'
-                          : 'border-violet-100 bg-white hover:border-violet-300 hover:shadow-sm active:scale-[0.99]'
+                          : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
                         }
                       `}
                     >
                       <div className="flex items-center justify-between mb-2">
                         {/* Time */}
                         <div className="flex items-center gap-2">
-                          <Clock className={`h-4 w-4 ${slot.isSelected ? 'text-violet-500' : 'text-gray-500'}`} />
-                          <span className={`font-semibold text-base ${slot.isSelected ? 'text-violet-900' : 'text-gray-900'}`}>
+                          <Clock className={`h-4 w-4 ${slot.isSelected ? 'text-blue-600' : 'text-gray-500'}`} />
+                          <span className={`font-semibold text-base ${slot.isSelected ? 'text-gray-900' : 'text-gray-900'}`}>
                             {slot.startTime} - {slot.endTime}
                           </span>
                         </div>
 
                         {/* Selected indicator */}
                         {slot.isSelected && (
-                          <CheckCircle2 className="h-5 w-5 text-violet-500" />
+                          <CheckCircle2 className="h-5 w-5 text-blue-600" />
                         )}
                       </div>
 

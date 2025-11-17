@@ -7,7 +7,7 @@ import React from 'react'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { Badge } from '@/components/ui/badge'
-import { Clock, Users } from 'lucide-react'
+import { Clock, Users, CheckCircle2 } from 'lucide-react'
 import type { DayInfo, SlotDisplayInfo, TimeSlot } from './types'
 import { getAvailabilityBadgeConfig } from './utils'
 
@@ -37,17 +37,17 @@ export const DesktopWeekGrid: React.FC<DesktopWeekGridProps> = ({
               className={`
                 p-3 rounded-xl border text-center transition-all
                 ${day.isToday
-                  ? 'bg-gradient-to-br from-violet-400 via-purple-400 to-pink-400 text-white border-violet-300 shadow-md'
+                  ? 'bg-blue-600 text-white border-blue-500 shadow-md'
                   : day.isPast
                   ? 'bg-gray-50/50 border-gray-200/50 opacity-60'
-                  : 'bg-white border-violet-100 hover:border-violet-200 hover:shadow-sm'
+                  : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm'
                 }
               `}
             >
-              <div className={`text-xs font-medium uppercase tracking-wide ${day.isToday ? 'text-white/90' : 'text-violet-600'}`}>
+              <div className={`text-xs font-medium uppercase tracking-wide ${day.isToday ? 'text-white/90' : 'text-gray-600'}`}>
                 {format(day.date, 'EEE', { locale: fr })}
               </div>
-              <div className={`text-2xl font-bold ${day.isToday ? 'text-white' : 'text-gray-800'}`}>
+              <div className={`text-2xl font-bold ${day.isToday ? 'text-white' : 'text-gray-900'}`}>
                 {format(day.date, 'dd', { locale: fr })}
               </div>
               {day.isToday && (
@@ -72,7 +72,7 @@ export const DesktopWeekGrid: React.FC<DesktopWeekGridProps> = ({
           return (
             <div
               key={day.date.toISOString()}
-              className="space-y-2 max-h-[600px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-violet-200 scrollbar-track-violet-50/50"
+              className="space-y-2 max-h-[600px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-50"
             >
               {slots.length === 0 ? (
                 <div className="p-4 text-center text-sm text-gray-400 border border-dashed border-gray-200 rounded-xl bg-gray-50/30">
@@ -90,19 +90,24 @@ export const DesktopWeekGrid: React.FC<DesktopWeekGridProps> = ({
                       className={`
                         w-full p-3 rounded-xl border transition-all duration-200 text-left group
                         ${slot.isSelected
-                          ? 'border-violet-400 bg-gradient-to-br from-violet-50 to-purple-50 ring-2 ring-violet-300 ring-offset-1 scale-[1.02] shadow-md'
+                          ? 'border-blue-400 bg-blue-50 shadow-sm'
                           : slot.isDisabled
                           ? 'border-gray-200/50 bg-gray-50/50 cursor-not-allowed opacity-50'
-                          : 'border-violet-100 bg-white hover:border-violet-300 hover:shadow-sm hover:scale-[1.01] active:scale-[0.99]'
+                          : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
                         }
                       `}
                     >
-                      {/* Time */}
-                      <div className="flex items-center gap-1.5 mb-2">
-                        <Clock className={`h-3.5 w-3.5 ${slot.isSelected ? 'text-violet-500' : 'text-gray-400'}`} />
-                        <span className={`text-sm font-semibold ${slot.isSelected ? 'text-violet-900' : 'text-gray-800'}`}>
-                          {slot.startTime}
-                        </span>
+                      {/* Time and Selected indicator */}
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-1.5">
+                          <Clock className={`h-3.5 w-3.5 ${slot.isSelected ? 'text-blue-600' : 'text-gray-400'}`} />
+                          <span className={`text-sm font-semibold ${slot.isSelected ? 'text-gray-900' : 'text-gray-800'}`}>
+                            {slot.startTime}
+                          </span>
+                        </div>
+                        {slot.isSelected && (
+                          <CheckCircle2 className="h-4 w-4 text-blue-600" />
+                        )}
                       </div>
 
                       {/* Availability */}
@@ -118,13 +123,6 @@ export const DesktopWeekGrid: React.FC<DesktopWeekGridProps> = ({
                           <div className={`w-2 h-2 rounded-full ${badge.className}`} />
                         )}
                       </div>
-
-                      {/* Selected indicator */}
-                      {slot.isSelected && (
-                        <div className="mt-2 text-xs font-medium text-violet-600 flex items-center gap-1">
-                          ✓ Sélectionné
-                        </div>
-                      )}
                     </button>
                   )
                 })

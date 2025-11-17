@@ -33,14 +33,29 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
       <div className="max-w-md w-full">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Slotify Admin</h1>
-          <p className="text-gray-400">Connectez-vous pour accéder au panneau d&apos;administration</p>
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-blue-600 mb-4 shadow-sm">
+            <svg
+              className="w-8 h-8 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+          </div>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Slotify Admin</h1>
+          <p className="text-gray-600">Connectez-vous pour accéder au panneau d&apos;administration</p>
         </div>
 
-        <div className="bg-white rounded-lg shadow-xl p-8">
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8">
           <form onSubmit={handleSubmit}>
             <div className="mb-6">
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
@@ -51,7 +66,7 @@ export default function AdminLoginPage() {
                 id="email"
                 name="email"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="admin@slotify.com"
               />
             </div>
@@ -65,20 +80,20 @@ export default function AdminLoginPage() {
                 id="password"
                 name="password"
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="••••••••"
               />
             </div>
 
             {error && (
-              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg">
                 {error}
               </div>
             )}
 
             <button
               type="submit"
-              className="w-full px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition disabled:opacity-50 mb-4"
+              className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-sm disabled:opacity-50 mb-4"
               disabled={loading}
             >
               {loading ? 'Connexion...' : 'Se connecter'}
@@ -86,7 +101,7 @@ export default function AdminLoginPage() {
 
             <Link
               href="/"
-              className="block text-center text-sm text-gray-600 hover:text-gray-800"
+              className="block text-center text-sm text-gray-600 hover:text-gray-900"
             >
               ← Retour à l&apos;accueil
             </Link>

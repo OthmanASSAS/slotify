@@ -21,7 +21,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   const weekEnd = addDays(currentWeekStart, 6)
 
   return (
-    <div className="sticky top-16 z-30 bg-gradient-to-br from-violet-50/80 via-purple-50/80 to-pink-50/80 backdrop-blur-sm pb-6 mb-6">
+    <div className="sticky top-16 z-30 bg-gray-50 backdrop-blur-sm pb-6 mb-6">
       {/* Legend */}
       <div className="mb-4">
         <CalendarLegend />
@@ -33,7 +33,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
           onClick={onPreviousWeek}
           variant="outline"
           size="sm"
-          className="border border-violet-200 hover:bg-violet-50 hover:border-violet-300 rounded-full px-4"
+          className="border border-gray-200 hover:bg-white hover:border-gray-300 rounded-full px-4 shadow-sm"
           aria-label="Semaine précédente"
           disabled={!canGoToPreviousWeek}
         >
@@ -41,9 +41,9 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
           <span className="hidden sm:inline text-sm">Précédente</span>
         </Button>
 
-        <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/80 backdrop-blur-sm border border-violet-200/60 shadow-sm">
-          <Calendar className="h-4 w-4 text-violet-500" aria-hidden="true" />
-          <span className="font-medium text-sm text-gray-800">
+        <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-white border border-gray-200 shadow-sm">
+          <Calendar className="h-4 w-4 text-blue-600" aria-hidden="true" />
+          <span className="font-medium text-sm text-gray-900">
             {format(currentWeekStart, 'dd MMM', { locale: fr })} -{' '}
             {format(weekEnd, 'dd MMM yyyy', { locale: fr })}
           </span>
@@ -53,7 +53,7 @@ export const CalendarHeader: React.FC<CalendarHeaderProps> = ({
           onClick={onNextWeek}
           variant="outline"
           size="sm"
-          className="border border-violet-200 hover:bg-violet-50 hover:border-violet-300 rounded-full px-4"
+          className="border border-gray-200 hover:bg-white hover:border-gray-300 rounded-full px-4 shadow-sm"
           aria-label="Semaine suivante"
           disabled={!canGoToNextWeek}
         >

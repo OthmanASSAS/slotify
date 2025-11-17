@@ -72,31 +72,31 @@ export default function ReservationForm({ slots, onSuccess, onCancel }: Reservat
 
   return (
     <Dialog open={true} onOpenChange={(open) => !open && onCancel()}>
-      <DialogContent className="sm:max-w-[540px] border-2 border-violet-200">
+      <DialogContent className="sm:max-w-[540px] border border-gray-200">
         <DialogHeader>
           <div className="flex items-center gap-2 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg">
+            <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-sm">
               <Calendar className="h-5 w-5 text-white" />
             </div>
             <div>
-              <DialogTitle className="text-xl bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
+              <DialogTitle className="text-xl text-gray-900">
                 Confirmer la réservation
               </DialogTitle>
             </div>
           </div>
-          <DialogDescription className="text-slate-600">
+          <DialogDescription className="text-gray-600">
             {slots.length === 1 ? 'Vous allez réserver 1 créneau' : `Vous allez réserver ${slots.length} créneaux`}
           </DialogDescription>
         </DialogHeader>
 
-        <Card className="p-4 bg-gradient-to-br from-violet-50 to-purple-50 border-2 border-violet-200 max-h-[200px] overflow-y-auto">
+        <Card className="p-4 bg-blue-50 border border-gray-200 max-h-[200px] overflow-y-auto">
           <div className="space-y-2">
             {slots.map((slot, index) => (
-              <div key={index} className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white/80 border border-violet-200 shadow-sm">
-                <Calendar className="h-4 w-4 text-violet-600 shrink-0" />
-                <span className="text-sm font-medium text-slate-800">{format(slot.date, 'EEE dd MMM', { locale: fr })}</span>
-                <Clock className="h-4 w-4 text-violet-600 shrink-0" />
-                <span className="text-sm font-bold text-violet-600">{slot.startTime} - {slot.endTime}</span>
+              <div key={index} className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white border border-gray-200 shadow-sm">
+                <Calendar className="h-4 w-4 text-blue-600 shrink-0" />
+                <span className="text-sm font-medium text-gray-800">{format(slot.date, 'EEE dd MMM', { locale: fr })}</span>
+                <Clock className="h-4 w-4 text-blue-600 shrink-0" />
+                <span className="text-sm font-bold text-blue-600">{slot.startTime} - {slot.endTime}</span>
               </div>
             ))}
           </div>
@@ -104,7 +104,7 @@ export default function ReservationForm({ slots, onSuccess, onCancel }: Reservat
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-sm font-semibold text-slate-700">Votre adresse email</Label>
+            <Label htmlFor="email" className="text-sm font-semibold text-gray-700">Votre adresse email</Label>
             <Input
               type="email"
               id="email"
@@ -113,13 +113,13 @@ export default function ReservationForm({ slots, onSuccess, onCancel }: Reservat
               required
               placeholder="votre.email@example.com"
               disabled={loading}
-              className="border-violet-200 focus:border-violet-400 focus:ring-violet-400"
+              className="border-gray-200 focus:border-blue-400 focus:ring-blue-400"
             />
-            <p className="text-xs text-slate-500">Votre email doit être autorisé pour effectuer une réservation</p>
+            <p className="text-xs text-gray-500">Votre email doit être autorisé pour effectuer une réservation</p>
           </div>
 
           {error && (
-            <Card className="p-3 bg-red-50 border-2 border-red-200">
+            <Card className="p-3 bg-red-50 border border-red-200">
               <div className="flex items-start gap-2">
                 <AlertCircle className="h-4 w-4 text-red-600 mt-0.5 shrink-0" />
                 <p className="text-sm text-red-700 font-medium">{error}</p>
@@ -133,14 +133,14 @@ export default function ReservationForm({ slots, onSuccess, onCancel }: Reservat
               variant="outline"
               onClick={onCancel}
               disabled={loading}
-              className="border-violet-200 hover:bg-violet-50"
+              className="border-gray-200 hover:bg-gray-50"
             >
               Annuler
             </Button>
             <Button
               type="submit"
               disabled={loading}
-              className="bg-gradient-to-r from-violet-500 to-purple-600 hover:from-violet-600 hover:to-purple-700 shadow-lg shadow-violet-500/30"
+              className="bg-blue-600 hover:bg-blue-700 shadow-sm"
             >
               {loading ? 'Réservation...' : 'Confirmer'}
             </Button>

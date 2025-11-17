@@ -27,13 +27,13 @@ export const SlotButton: React.FC<SlotButtonProps> = ({
         ${isSelected ? 'sélectionné' : 'non sélectionné'}
       `}
       className={`
-        w-full p-3 rounded-lg border-2 transition-all duration-200 text-left
+        w-full p-3 rounded-lg border transition-all duration-200 text-left
         ${
           isSelected
-            ? 'border-violet-500 bg-gradient-to-r from-violet-100 to-purple-100 ring-2 ring-violet-400 ring-offset-2 scale-[1.02]'
+            ? 'border-blue-500 bg-blue-50 shadow-sm'
             : isDisabled
             ? 'border-gray-200 bg-gray-50 cursor-not-allowed opacity-60'
-            : 'border-violet-200 bg-white hover:border-violet-400 hover:shadow-md hover:scale-[1.01] active:scale-[0.99]'
+            : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
         }
       `}
     >
@@ -41,18 +41,18 @@ export const SlotButton: React.FC<SlotButtonProps> = ({
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <Clock
-            className={`h-4 w-4 ${isSelected ? 'text-violet-600' : 'text-gray-600'}`}
+            className={`h-4 w-4 ${isSelected ? 'text-blue-600' : 'text-gray-600'}`}
             aria-hidden="true"
           />
           <span
-            className={`font-bold ${isSelected ? 'text-violet-900' : 'text-gray-900'}`}
+            className={`font-bold ${isSelected ? 'text-gray-900' : 'text-gray-900'}`}
           >
             {slot.startTime} - {slot.endTime}
           </span>
         </div>
         {isSelected && (
           <CheckCircle2
-            className="h-5 w-5 text-violet-600"
+            className="h-5 w-5 text-blue-600"
             aria-hidden="true"
           />
         )}

@@ -48,19 +48,19 @@ export const FloatingConfirmButton: React.FC<FloatingConfirmButtonProps> = ({
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 pb-safe">
       <div className="max-w-3xl mx-auto px-4 pb-4">
-        <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-lg border border-violet-200/50 overflow-hidden">
+        <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
           {/* Compact header - collapsible summary */}
-          <div className="bg-gradient-to-r from-violet-50 via-purple-50 to-pink-50 px-4 py-3 border-b border-violet-100">
+          <div className="bg-blue-50 px-4 py-3 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-violet-500 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
                   <CheckCircle2 className="h-4 w-4 text-white" />
                 </div>
                 <div>
                   <div className="font-semibold text-sm text-gray-900">
                     {selectedSlots.length} créneau{selectedSlots.length > 1 ? 'x' : ''}
                   </div>
-                  <div className="text-xs text-gray-500 flex items-center gap-1">
+                  <div className="text-xs text-gray-600 flex items-center gap-1">
                     <Clock className="h-3 w-3" />
                     {totalHours}h
                   </div>
@@ -72,7 +72,7 @@ export const FloatingConfirmButton: React.FC<FloatingConfirmButtonProps> = ({
                 {Array.from(slotsByDay.entries()).map(([dateKey, slots]) => {
                   const firstSlot = slots[0]
                   return (
-                    <div key={dateKey} className="text-xs text-gray-600 bg-white/60 rounded-full px-2 py-1">
+                    <div key={dateKey} className="text-xs text-gray-700 bg-white rounded-full px-2 py-1 border border-gray-200">
                       {format(firstSlot.date, 'EEE dd', { locale: fr })}
                     </div>
                   )
@@ -86,7 +86,7 @@ export const FloatingConfirmButton: React.FC<FloatingConfirmButtonProps> = ({
             <Button
               onClick={onConfirm}
               size="lg"
-              className="w-full bg-gradient-to-r from-violet-500 via-purple-500 to-pink-500 hover:from-violet-600 hover:via-purple-600 hover:to-pink-600 text-white font-semibold py-5 rounded-xl shadow-md transition-all"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-5 rounded-xl shadow-md transition-all"
             >
               Continuer vers la réservation
               <ChevronRight className="h-4 w-4 ml-2" />

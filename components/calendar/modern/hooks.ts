@@ -210,7 +210,7 @@ export const useSlotDisplayInfos = (
     const key = getAvailabilityKey(slot.id, day.date)
     const slotAvailability = availability[key] || null
 
-    const available = slotAvailability?.available ?? 0
+    const available = slotAvailability?.available ?? slot.maxCapacity
     const capacity = slotAvailability?.capacity ?? slot.maxCapacity
     const status = getAvailabilityStatus(available, capacity)
 

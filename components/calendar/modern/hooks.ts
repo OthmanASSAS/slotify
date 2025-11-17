@@ -214,6 +214,8 @@ export const useSlotDisplayInfos = (
     const capacity = slotAvailability?.capacity ?? slot.maxCapacity
     const status = getAvailabilityStatus(available, capacity)
 
+    console.log(`[DEBUG] Slot ${slot.id} on ${day.date.toISOString().split('T')[0]}: slotAvailability=`, slotAvailability, `available=${available}, capacity=${capacity}`)
+
     const computedAvailability = { available, capacity }
 
     return {

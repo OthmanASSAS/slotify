@@ -214,11 +214,13 @@ export const useSlotDisplayInfos = (
     const capacity = slotAvailability?.capacity ?? slot.maxCapacity
     const status = getAvailabilityStatus(available, capacity)
 
+    const computedAvailability = { available, capacity }
+
     return {
       ...slot,
-      availability: { available, capacity },
+      availability: computedAvailability,
       isSelected: isSlotSelected(slot.id, day.date),
-      isDisabled: isSlotDisabled(day.date, slotAvailability),
+      isDisabled: isSlotDisabled(day.date, computedAvailability, slot.startTime),
       availabilityStatus: status,
     }
   })

@@ -76,8 +76,12 @@ export async function getWeekAvailability(weekDates: Date[]) {
         available,
         capacity: slot.maxCapacity,
       }
+
+      // Debug log
+      console.log(`Slot ${slot.id} on ${dateKey}: ${available}/${slot.maxCapacity} (reservations: ${reservationCount})`)
     }
   }
 
+  console.log('Total availability map entries:', Object.keys(availabilityMap).length)
   return availabilityMap
 }

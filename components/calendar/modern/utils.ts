@@ -14,10 +14,13 @@ import type {
 
 /**
  * Génère une clé unique pour identifier un créneau à une date donnée
- * Format: "slotId-YYYY-MM-DDT00:00:00.000Z"
+ * Format: "slotId-YYYY-MM-DD" (sans timezone pour éviter les problèmes UTC/local)
  */
 export const getAvailabilityKey = (slotId: string, date: Date): string => {
-  const dateKey = startOfDay(date).toISOString()
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const dateKey = `${year}-${month}-${day}`
   return `${slotId}-${dateKey}`
 }
 

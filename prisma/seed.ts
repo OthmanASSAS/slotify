@@ -17,12 +17,16 @@ async function main() {
     )
   }
 
-  const admin = await prisma.admin.upsert({
-    where: { email: adminEmail },
-    update: {
-      password: await hash(adminPassword, 10),
-    },
-    create: {
+  // Delete existing admin to ensure a clean slate
+  try {
+    await prisma.admin.delete({ where: { email: adminEmail } });
+    console.log("✓ Existing admin deleted.");
+  } catch (error) {
+    // Ignore error if admin doesn't exist
+  }
+
+  const admin = await prisma.admin.create({
+    data: {
       email: adminEmail,
       password: await hash(adminPassword, 10),
     },

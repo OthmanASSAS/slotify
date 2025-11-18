@@ -4,7 +4,7 @@
  * Principe : Single Responsibility - chaque hook fait une seule chose
  */
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { addDays, startOfWeek, isSameDay } from 'date-fns'
 import { getPublicSlots, getWeekAvailability } from '@/app/actions/slots'
 import type {

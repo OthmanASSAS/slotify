@@ -52,7 +52,7 @@ export default function SlotsList({ initialData }: { initialData: TimeSlot[] }) 
         await deleteSlot(id)
         toast.success('Créneau supprimé')
         router.refresh()
-      } catch (error) {
+      } catch {
         toast.error('Erreur lors de la suppression')
       }
     })
@@ -64,7 +64,7 @@ export default function SlotsList({ initialData }: { initialData: TimeSlot[] }) 
         await toggleSlotActive(id, isActive)
         toast.success(isActive ? 'Créneau désactivé' : 'Créneau activé')
         router.refresh()
-      } catch (error) {
+      } catch {
         toast.error('Erreur')
       }
     })

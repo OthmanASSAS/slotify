@@ -11,7 +11,6 @@ import { getAvailabilityBadgeConfig } from './utils'
 
 export const SlotButton: React.FC<SlotButtonProps> = ({
   slot,
-  date,
   onClick,
 }) => {
   const { availability, isSelected, isDisabled, availabilityStatus } = slot

@@ -25,7 +25,7 @@ export default function AdminLoginPage() {
         router.push('/admin/dashboard')
         router.refresh()
       }
-    } catch (err: unknown) {
+    } catch {
       setError('Une erreur est survenue')
     } finally {
       setLoading(false)

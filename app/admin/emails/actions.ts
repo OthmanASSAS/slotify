@@ -16,7 +16,7 @@ const emailSchema = z.object({
 export async function getEmails() {
   const session = await auth()
   if (!session || session.user?.role !== 'admin') {
-    throw new Error('Non autorisé')
+    redirect('/admin')
   }
 
   const emails = await prisma.allowedEmail.findMany({

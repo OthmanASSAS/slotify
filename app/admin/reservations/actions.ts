@@ -10,7 +10,7 @@ import { redirect } from 'next/navigation'
 export async function getReservations() {
   const session = await auth()
   if (!session || session.user?.role !== 'admin') {
-    throw new Error('Non autorisé')
+    redirect('/admin')
   }
 
   const reservations = await prisma.reservation.findMany({

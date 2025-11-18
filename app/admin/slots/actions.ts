@@ -19,7 +19,7 @@ const slotSchema = z.object({
 export async function getSlots() {
   const session = await auth()
   if (!session || session.user?.role !== 'admin') {
-    throw new Error('Non autorisé')
+    redirect('/admin')
   }
 
   const slots = await prisma.timeSlot.findMany({

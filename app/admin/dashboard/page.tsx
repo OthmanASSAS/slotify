@@ -45,80 +45,48 @@ export default async function AdminDashboard() {
 
       <main className="py-8 sm:py-12">
         <div className="max-w-7xl mx-auto px-4">
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <Card className="p-6 bg-blue-50 border border-gray-200 hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-600 mb-1">Réservations</h3>
-                  <p className="text-4xl font-bold text-gray-900">-</p>
-                  <p className="text-xs text-gray-600 mt-2">Total actives</p>
-                </div>
-                <CalendarDays className="h-12 w-12 text-blue-600 opacity-80" />
-              </div>
-            </Card>
-
-            <Card className="p-6 bg-emerald-50 border border-gray-200 hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-600 mb-1">Créneaux</h3>
-                  <p className="text-4xl font-bold text-gray-900">10</p>
-                  <p className="text-xs text-gray-600 mt-2">Créneaux disponibles</p>
-                </div>
-                <Clock className="h-12 w-12 text-emerald-600 opacity-80" />
-              </div>
-            </Card>
-
-            <Card className="p-6 bg-purple-50 border border-gray-200 hover:shadow-md transition-shadow">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-600 mb-1">Emails autorisés</h3>
-                  <p className="text-4xl font-bold text-gray-900">4</p>
-                  <p className="text-xs text-gray-600 mt-2">Étudiants autorisés</p>
-                </div>
-                <Mail className="h-12 w-12 text-purple-600 opacity-80" />
-              </div>
-            </Card>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="mb-8">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Actions rapides</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Link href="/admin/reservations">
-              <Card className="p-6 border border-gray-200 bg-white hover:border-gray-300 hover:shadow-md transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-14 h-14 rounded-xl bg-blue-600 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                    <CalendarDays className="w-7 h-7 text-white" />
+              <Card className="p-6 border border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm transition-all">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-lg bg-blue-600 flex items-center justify-center shadow-sm">
+                    <CalendarDays className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900">Réservations</h2>
+                    <p className="text-sm text-gray-500">Voir tout</p>
                   </div>
                 </div>
-                <h2 className="text-xl font-bold text-gray-900 mb-2">Réservations</h2>
                 <p className="text-gray-600 text-sm">Gérer toutes les réservations actives et annulées</p>
               </Card>
             </Link>
 
             <Link href="/admin/slots">
-              <Card className="p-6 border border-gray-200 bg-white hover:border-gray-300 hover:shadow-md transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-14 h-14 rounded-xl bg-emerald-600 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                    <Clock className="w-7 h-7 text-white" />
+              <Card className="p-6 border border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm transition-all">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-lg bg-blue-600 flex items-center justify-center shadow-sm">
+                    <Clock className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900">Créneaux</h2>
+                    <p className="text-sm text-gray-500">Configurer</p>
                   </div>
                 </div>
-                <h2 className="text-xl font-bold text-gray-900 mb-2">Créneaux horaires</h2>
                 <p className="text-gray-600 text-sm">Créer et gérer les créneaux disponibles</p>
               </Card>
             </Link>
 
             <Link href="/admin/emails">
-              <Card className="p-6 border border-gray-200 bg-white hover:border-gray-300 hover:shadow-md transition-all group">
-                <div className="flex items-center justify-between mb-4">
-                  <div className="w-14 h-14 rounded-xl bg-purple-600 flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                    <Mail className="w-7 h-7 text-white" />
+              <Card className="p-6 border border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm transition-all">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-lg bg-blue-600 flex items-center justify-center shadow-sm">
+                    <Mail className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900">Emails</h2>
+                    <p className="text-sm text-gray-500">Liste blanche</p>
                   </div>
                 </div>
-                <h2 className="text-xl font-bold text-gray-900 mb-2">Emails autorisés</h2>
                 <p className="text-gray-600 text-sm">Gérer la liste blanche des emails</p>
               </Card>
             </Link>

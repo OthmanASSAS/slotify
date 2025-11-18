@@ -43,92 +43,75 @@ export default function ReservationsList({ initialData }: { initialData: Reserva
 
   return (
     <>
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100 border-2 border-blue-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-blue-700">Total</p>
-              <p className="text-3xl font-bold text-blue-600">{stats.total}</p>
-            </div>
-            <Calendar className="h-10 w-10 text-blue-500" />
-          </div>
-        </Card>
-
-        <Card className="p-6 bg-gradient-to-br from-emerald-50 to-emerald-100 border-2 border-emerald-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-emerald-700">Actives</p>
-              <p className="text-3xl font-bold text-emerald-600">{stats.active}</p>
-            </div>
-            <CheckCircle2 className="h-10 w-10 text-emerald-500" />
-          </div>
-        </Card>
-
-        <Card className="p-6 bg-gradient-to-br from-red-50 to-red-100 border-2 border-red-200">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-red-700">Annulées</p>
-              <p className="text-3xl font-bold text-red-600">{stats.cancelled}</p>
-            </div>
-            <XCircle className="h-10 w-10 text-red-500" />
-          </div>
-        </Card>
+      {/* Stats */}
+      <div className="flex items-center gap-8 mb-8">
+        <div>
+          <p className="text-sm text-gray-500">Total</p>
+          <p className="text-3xl font-semibold text-gray-900">{stats.total}</p>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500">Actives</p>
+          <p className="text-3xl font-semibold text-gray-900">{stats.active}</p>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500">Annulées</p>
+          <p className="text-3xl font-semibold text-gray-900">{stats.cancelled}</p>
+        </div>
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2 mb-6">
+      <div className="inline-flex rounded-lg border border-gray-200 p-1 bg-white mb-6">
         <Button
-          variant={filter === 'all' ? 'default' : 'outline'}
+          variant="ghost"
           size="sm"
           onClick={() => setFilter('all')}
-          className={filter === 'all' ? 'bg-gradient-to-r from-violet-500 to-purple-600 shadow-lg' : 'border-violet-200 hover:bg-violet-50'}
+          className={filter === 'all' ? 'bg-gray-100' : 'hover:bg-gray-50'}
         >
           Toutes ({stats.total})
         </Button>
         <Button
-          variant={filter === 'active' ? 'default' : 'outline'}
+          variant="ghost"
           size="sm"
           onClick={() => setFilter('active')}
-          className={filter === 'active' ? 'bg-gradient-to-r from-emerald-500 to-green-600 shadow-lg' : 'border-emerald-200 hover:bg-emerald-50'}
+          className={filter === 'active' ? 'bg-gray-100' : 'hover:bg-gray-50'}
         >
           Actives ({stats.active})
         </Button>
         <Button
-          variant={filter === 'cancelled' ? 'default' : 'outline'}
+          variant="ghost"
           size="sm"
           onClick={() => setFilter('cancelled')}
-          className={filter === 'cancelled' ? 'bg-gradient-to-r from-red-500 to-red-600 shadow-lg' : 'border-red-200 hover:bg-red-50'}
+          className={filter === 'cancelled' ? 'bg-gray-100' : 'hover:bg-gray-50'}
         >
           Annulées ({stats.cancelled})
         </Button>
       </div>
 
       {/* Reservations List */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {filteredReservations.length === 0 ? (
-          <Card className="p-12 text-center border-2 border-violet-200">
-            <Calendar className="h-16 w-16 text-violet-300 mx-auto mb-4" />
-            <p className="text-lg font-medium text-slate-600">Aucune réservation trouvée</p>
+          <Card className="p-12 text-center border border-gray-200 bg-white">
+            <Calendar className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+            <p className="text-base font-medium text-gray-900">Aucune réservation trouvée</p>
           </Card>
         ) : (
           filteredReservations.map((reservation) => (
             <Card
               key={reservation.id}
-              className={`p-6 border-2 transition-all hover:shadow-lg ${
+              className={`p-4 border transition-all ${
                 reservation.cancelledAt
-                  ? 'bg-red-50/50 border-red-200 opacity-75'
-                  : 'bg-white border-violet-200 hover:border-violet-300'
+                  ? 'bg-gray-50 border-gray-200 opacity-60'
+                  : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm'
               }`}
             >
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="flex-1 space-y-3">
+                <div className="flex-1 space-y-2">
                   {/* Email */}
                   <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-violet-600" />
-                    <span className="font-semibold text-slate-800">{reservation.allowedEmail.email}</span>
+                    <Mail className="h-4 w-4 text-blue-600" />
+                    <span className="font-medium text-gray-900">{reservation.allowedEmail.email}</span>
                     {reservation.cancelledAt && (
-                      <Badge className="bg-red-100 text-red-700 border border-red-300">
+                      <Badge variant="secondary" className="bg-red-100 text-red-700 border-red-200">
                         Annulée
                       </Badge>
                     )}
@@ -137,14 +120,14 @@ export default function ReservationsList({ initialData }: { initialData: Reserva
                   {/* Date & Time */}
                   <div className="flex flex-wrap gap-4">
                     <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-violet-600" />
-                      <span className="text-sm text-slate-600">
+                      <Calendar className="h-4 w-4 text-blue-600" />
+                      <span className="text-sm text-gray-600">
                         {dayNames[reservation.timeSlot.dayOfWeek]} - {format(new Date(reservation.reservationDate), 'dd MMM yyyy', { locale: fr })}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-violet-600" />
-                      <span className="text-sm text-slate-600">
+                      <Clock className="h-4 w-4 text-blue-600" />
+                      <span className="text-sm text-gray-600">
                         {reservation.timeSlot.startTime} - {reservation.timeSlot.endTime}
                       </span>
                     </div>
@@ -152,10 +135,10 @@ export default function ReservationsList({ initialData }: { initialData: Reserva
 
                   {/* Code */}
                   <div className="flex items-center gap-2">
-                    <code className="px-3 py-1 bg-gradient-to-r from-violet-100 to-purple-100 border border-violet-200 rounded-lg text-sm font-mono font-bold text-violet-700">
+                    <code className="px-2 py-1 bg-blue-50 border border-blue-200 rounded text-xs font-mono font-medium text-blue-700">
                       {reservation.cancellationCode}
                     </code>
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-gray-500">
                       Créée le {format(new Date(reservation.createdAt), 'dd/MM/yyyy à HH:mm', { locale: fr })}
                     </span>
                   </div>

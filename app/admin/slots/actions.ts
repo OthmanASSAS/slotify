@@ -30,7 +30,8 @@ export async function getSlots() {
 }
 
 /**
- * Server Action: Créer un créneau (protégé)
+ * Server Action: Créer des créneaux horaires (protégé)
+ * Découpe automatiquement la plage en créneaux d'1h
  */
 export async function createSlot(formData: FormData) {
   const session = await auth()
@@ -47,24 +48,87 @@ export async function createSlot(formData: FormData) {
 
   const validated = slotSchema.parse(data)
 
-  // Vérifier si le créneau existe déjà
-  const existing = await prisma.timeSlot.findFirst({
-    where: {
-      dayOfWeek: validated.dayOfWeek,
-      startTime: validated.startTime,
-      endTime: validated.endTime,
-    },
-  })
+  // Parser les heures et minutes
+  const [startHour, startMinutes] = validated.startTime.split(':').map(Number)
+  const [endHour, endMinutes] = validated.endTime.split(':').map(Number)
 
-  if (existing) {
-    throw new Error('Ce créneau existe déjà')
+  // Convertir en minutes totales pour faciliter les calculs
+  const startTotalMinutes = startHour * 60 + startMinutes
+  const endTotalMinutes = endHour * 60 + endMinutes
+
+  if (endTotalMinutes <= startTotalMinutes) {
+    throw new Error('L\'heure de fin doit être après l\'heure de début')
   }
 
-  await prisma.timeSlot.create({
-    data: {
-      ...validated,
-      isActive: true,
-    },
+  // Vérifier que les minutes sont 00 ou 30
+  if ((startMinutes !== 0 && startMinutes !== 30) || (endMinutes !== 0 && endMinutes !== 30)) {
+    throw new Error('Seules les heures pleines (:00) ou demi-heures (:30) sont autorisées')
+  }
+
+  // Générer les créneaux
+  const slots = []
+  let currentMinutes = startTotalMinutes
+
+  while (currentMinutes < endTotalMinutes) {
+    const currentHour = Math.floor(currentMinutes / 60)
+    const currentMin = currentMinutes % 60
+
+    // Calculer la prochaine heure pleine
+    const nextHourMinutes = (Math.floor(currentMinutes / 60) + 1) * 60
+
+    // Si on peut faire un créneau d'1h complet
+    if (nextHourMinutes <= endTotalMinutes && currentMin === 0) {
+      const slotStartTime = `${currentHour.toString().padStart(2, '0')}:00`
+      const slotEndTime = `${(currentHour + 1).toString().padStart(2, '0')}:00`
+
+      slots.push({
+        dayOfWeek: validated.dayOfWeek,
+        startTime: slotStartTime,
+        endTime: slotEndTime,
+        maxCapacity: validated.maxCapacity,
+        isActive: true,
+      })
+
+      currentMinutes = nextHourMinutes
+    } else {
+      // Sinon, créer un créneau jusqu'à la prochaine heure pleine ou jusqu'à la fin
+      const endSlotMinutes = Math.min(nextHourMinutes, endTotalMinutes)
+      const endSlotHour = Math.floor(endSlotMinutes / 60)
+      const endSlotMin = endSlotMinutes % 60
+
+      const slotStartTime = `${currentHour.toString().padStart(2, '0')}:${currentMin.toString().padStart(2, '0')}`
+      const slotEndTime = `${endSlotHour.toString().padStart(2, '0')}:${endSlotMin.toString().padStart(2, '0')}`
+
+      slots.push({
+        dayOfWeek: validated.dayOfWeek,
+        startTime: slotStartTime,
+        endTime: slotEndTime,
+        maxCapacity: validated.maxCapacity,
+        isActive: true,
+      })
+
+      currentMinutes = endSlotMinutes
+    }
+  }
+
+  // Vérifier qu'aucun créneau n'existe déjà
+  for (const slot of slots) {
+    const existing = await prisma.timeSlot.findFirst({
+      where: {
+        dayOfWeek: slot.dayOfWeek,
+        startTime: slot.startTime,
+        endTime: slot.endTime,
+      },
+    })
+
+    if (existing) {
+      throw new Error(`Le créneau ${slot.startTime}-${slot.endTime} existe déjà`)
+    }
+  }
+
+  // Créer tous les créneaux
+  await prisma.timeSlot.createMany({
+    data: slots,
   })
 
   revalidatePath('/admin/slots')

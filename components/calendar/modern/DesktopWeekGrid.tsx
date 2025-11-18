@@ -115,7 +115,7 @@ export const DesktopWeekGrid: React.FC<DesktopWeekGridProps> = ({
                         <div className="flex items-center gap-1.5">
                           <Users className="h-3 w-3 text-gray-400" />
                           <span className="text-xs text-gray-600">
-                            <span className="font-semibold">{slot.availability.available}</span>
+                            Reste <span className="font-semibold">{slot.availability.available}</span>
                             <span className="text-gray-400">/{slot.availability.capacity}</span>
                           </span>
                         </div>

@@ -145,8 +145,8 @@ export const MobileAccordion: React.FC<MobileAccordionProps> = ({
                         <div className="flex items-center gap-2">
                           <Users className="h-4 w-4 text-gray-400" />
                           <span className="text-sm text-gray-600">
-                            <span className="font-semibold text-gray-900">{slot.availability.available}</span>
-                            <span className="text-gray-400">/{slot.availability.capacity}</span> places
+                            Reste <span className="font-semibold text-gray-900">{slot.availability.available}</span>
+                            <span className="text-gray-400">/{slot.availability.capacity}</span>
                           </span>
                         </div>
 

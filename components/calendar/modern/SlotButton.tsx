@@ -62,8 +62,8 @@ export const SlotButton: React.FC<SlotButtonProps> = ({
         <div className="flex items-center gap-2">
           <Users className="h-3 w-3 text-gray-500" aria-hidden="true" />
           <span className="text-sm text-gray-600">
-            <span className="font-bold">{availability.available}</span>/
-            {availability.capacity} places
+            Reste <span className="font-bold">{availability.available}</span>/
+            {availability.capacity}
           </span>
         </div>
 

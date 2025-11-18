@@ -36,7 +36,7 @@ export default function HomePage() {
   const handleReservationSuccess = (code: string) => {
     setCancellationCode(code);
     setSelectedSlots([]);
-    setRefreshTrigger(prev => prev + 1); // Déclencher un refresh du calendrier
+    setRefreshTrigger((prev) => prev + 1); // Déclencher un refresh du calendrier
   };
 
   const handleCopyCode = () => {
@@ -68,11 +68,9 @@ export default function HomePage() {
               </svg>
             </div>
             <div>
-              <h1 className="text-xl font-semibold text-gray-900">
-                Slotify
-              </h1>
+              <h1 className="text-xl font-semibold text-gray-900">Slotify</h1>
               <p className="text-xs text-gray-500 hidden sm:block">
-                Réservation de salle d'étude
+                Réservation de salle d’étude
               </p>
             </div>
           </div>
@@ -115,7 +113,10 @@ export default function HomePage() {
           </p>
         </div>
 
-        <ModernCalendar onSlotSelect={handleSlotSelect} refreshTrigger={refreshTrigger} />
+        <ModernCalendar
+          onSlotSelect={handleSlotSelect}
+          refreshTrigger={refreshTrigger}
+        />
 
         {selectedSlots.length > 0 && (
           <ReservationForm
@@ -183,10 +184,8 @@ export default function HomePage() {
       <footer className="border-t border-gray-200 bg-white mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
           <p className="text-sm text-gray-600">
-            <span className="font-semibold text-gray-900">
-              Slotify
-            </span>{" "}
-            - Plateforme de réservation de salle d&apos;étude
+            <span className="font-semibold text-gray-900">Slotify</span> -
+            Plateforme de réservation de salle d&apos;étude
           </p>
         </div>
       </footer>

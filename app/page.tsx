@@ -83,7 +83,7 @@ export default function HomePage() {
             >
               <Link href="/cancel">
                 <X className="h-4 w-4 sm:mr-2" />
-                <span className="hidden sm:inline">Annuler</span>
+                <span className="hidden sm:inline">Annuler une réservation</span>
               </Link>
             </Button>
             <Button

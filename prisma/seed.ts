@@ -8,8 +8,14 @@ async function main() {
 
   // 1. Create admin user
   console.log("Creating admin user...");
-  const adminEmail = process.env.SEED_ADMIN_EMAIL || "admin@example.com"
-  const adminPassword = process.env.SEED_ADMIN_PASSWORD || "changeme"
+  const adminEmail = process.env.SEED_ADMIN_EMAIL
+  const adminPassword = process.env.SEED_ADMIN_PASSWORD
+
+  if (!adminEmail || !adminPassword) {
+    throw new Error(
+      'SEED_ADMIN_EMAIL and SEED_ADMIN_PASSWORD must be set in your .env file'
+    )
+  }
 
   const admin = await prisma.admin.upsert({
     where: { email: adminEmail },

@@ -18,8 +18,8 @@ const slotSchema = z.object({
  */
 export async function getSlots() {
   const session = await auth()
-  if (!session) {
-    redirect('/admin')
+  if (!session || session.user?.role !== 'admin') {
+    throw new Error('Non autorisé')
   }
 
   const slots = await prisma.timeSlot.findMany({
@@ -35,7 +35,7 @@ export async function getSlots() {
  */
 export async function createSlot(formData: FormData) {
   const session = await auth()
-  if (!session) {
+  if (!session || session.user?.role !== 'admin') {
     throw new Error('Non autorisé')
   }
 
@@ -140,7 +140,7 @@ export async function createSlot(formData: FormData) {
  */
 export async function deleteSlot(id: string) {
   const session = await auth()
-  if (!session) {
+  if (!session || session.user?.role !== 'admin') {
     throw new Error('Non autorisé')
   }
 
@@ -157,7 +157,7 @@ export async function deleteSlot(id: string) {
  */
 export async function toggleSlotActive(id: string, isActive: boolean) {
   const session = await auth()
-  if (!session) {
+  if (!session || session.user?.role !== 'admin') {
     throw new Error('Non autorisé')
   }
 

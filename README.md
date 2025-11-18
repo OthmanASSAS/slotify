@@ -68,15 +68,6 @@ npx prisma migrate dev
 npx prisma db seed
 ```
 
-### Credentials de développement
-
-Les credentials par défaut pour l'environnement de développement sont :
-
-- **Email** : `admin@slotify.com`
-- **Password** : `slotify123`
-
-> ⚠️ **Important** : Ces credentials sont uniquement pour le développement local. En production, utilisez des credentials différents et sécurisés via les variables d'environnement `SEED_ADMIN_EMAIL` et `SEED_ADMIN_PASSWORD`.
-
 ### Démarrage du serveur de développement
 
 ```bash

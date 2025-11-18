@@ -120,10 +120,17 @@ export async function createReservation(
   }
 }
 
+import { auth } from '@/auth'
+
 /**
  * Récupère toutes les réservations (pour l'admin)
  */
 export async function getAllReservations() {
+  const session = await auth()
+  if (!session || session.user?.role !== 'admin') {
+    throw new Error('Non autorisé')
+  }
+
   try {
     const reservations = await prisma.reservation.findMany({
       include: {

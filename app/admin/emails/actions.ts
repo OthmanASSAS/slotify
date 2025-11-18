@@ -15,8 +15,8 @@ const emailSchema = z.object({
  */
 export async function getEmails() {
   const session = await auth()
-  if (!session) {
-    redirect('/admin')
+  if (!session || session.user?.role !== 'admin') {
+    throw new Error('Non autorisé')
   }
 
   const emails = await prisma.allowedEmail.findMany({
@@ -44,7 +44,7 @@ export async function getEmails() {
  */
 export async function addEmail(formData: FormData) {
   const session = await auth()
-  if (!session) {
+  if (!session || session.user?.role !== 'admin') {
     throw new Error('Non autorisé')
   }
 
@@ -73,7 +73,7 @@ export async function addEmail(formData: FormData) {
  */
 export async function deleteEmail(id: string) {
   const session = await auth()
-  if (!session) {
+  if (!session || session.user?.role !== 'admin') {
     throw new Error('Non autorisé')
   }
 

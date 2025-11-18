@@ -7,14 +7,16 @@ import { headers } from 'next/headers'
 
 export async function authenticate(formData: FormData) {
   // Rate limiting
-  const headersList = await headers()
-  const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown'
-  const rateLimit = checkRateLimit(ip, 5, 15 * 60 * 1000)
+  if (process.env.NODE_ENV !== 'development') {
+    const headersList = await headers()
+    const ip = headersList.get('x-forwarded-for') || headersList.get('x-real-ip') || 'unknown'
+    const rateLimit = checkRateLimit(ip, 5, 15 * 60 * 1000)
 
-  if (!rateLimit.success) {
-    const resetDate = new Date(rateLimit.reset)
-    return {
-      error: `Trop de tentatives de connexion. Réessayez après ${resetDate.toLocaleTimeString('fr-FR')}`,
+    if (!rateLimit.success) {
+      const resetDate = new Date(rateLimit.reset)
+      return {
+        error: `Trop de tentatives de connexion. Réessayez après ${resetDate.toLocaleTimeString('fr-FR')}`,
+      }
     }
   }
 

@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Calendar, Clock, Mail, CheckCircle2, XCircle } from 'lucide-react'
+import { Calendar, Clock, Mail } from 'lucide-react'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
@@ -51,11 +51,11 @@ export default function ReservationsList({ initialData }: { initialData: Reserva
         </div>
         <div>
           <p className="text-sm text-gray-500">Actives</p>
-          <p className="text-3xl font-semibold text-gray-900">{stats.active}</p>
+          <p className="text-3xl font-semibold text-green-600">{stats.active}</p>
         </div>
         <div>
           <p className="text-sm text-gray-500">Annulées</p>
-          <p className="text-3xl font-semibold text-gray-900">{stats.cancelled}</p>
+          <p className="text-3xl font-semibold text-red-600">{stats.cancelled}</p>
         </div>
       </div>
 
@@ -73,7 +73,7 @@ export default function ReservationsList({ initialData }: { initialData: Reserva
           variant="ghost"
           size="sm"
           onClick={() => setFilter('active')}
-          className={filter === 'active' ? 'bg-gray-100' : 'hover:bg-gray-50'}
+          className={filter === 'active' ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'hover:bg-gray-50'}
         >
           Actives ({stats.active})
         </Button>
@@ -81,7 +81,7 @@ export default function ReservationsList({ initialData }: { initialData: Reserva
           variant="ghost"
           size="sm"
           onClick={() => setFilter('cancelled')}
-          className={filter === 'cancelled' ? 'bg-gray-100' : 'hover:bg-gray-50'}
+          className={filter === 'cancelled' ? 'bg-red-100 text-red-700 hover:bg-red-200' : 'hover:bg-gray-50'}
         >
           Annulées ({stats.cancelled})
         </Button>
@@ -100,7 +100,7 @@ export default function ReservationsList({ initialData }: { initialData: Reserva
               key={reservation.id}
               className={`p-4 border transition-all ${
                 reservation.cancelledAt
-                  ? 'bg-gray-50 border-gray-200 opacity-60'
+                  ? 'bg-red-50 border-red-200 opacity-80'
                   : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm'
               }`}
             >
@@ -108,10 +108,10 @@ export default function ReservationsList({ initialData }: { initialData: Reserva
                 <div className="flex-1 space-y-2">
                   {/* Email */}
                   <div className="flex items-center gap-2">
-                    <Mail className="h-4 w-4 text-blue-600" />
+                    <Mail className={`h-4 w-4 ${reservation.cancelledAt ? 'text-red-600' : 'text-green-600'}`} />
                     <span className="font-medium text-gray-900">{reservation.allowedEmail.email}</span>
                     {reservation.cancelledAt && (
-                      <Badge variant="secondary" className="bg-red-100 text-red-700 border-red-200">
+                      <Badge className="bg-red-200 text-red-800 border-red-300">
                         Annulée
                       </Badge>
                     )}
@@ -120,13 +120,13 @@ export default function ReservationsList({ initialData }: { initialData: Reserva
                   {/* Date & Time */}
                   <div className="flex flex-wrap gap-4">
                     <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-blue-600" />
+                      <Calendar className={`h-4 w-4 ${reservation.cancelledAt ? 'text-red-600' : 'text-green-600'}`} />
                       <span className="text-sm text-gray-600">
                         {dayNames[reservation.timeSlot.dayOfWeek]} - {format(new Date(reservation.reservationDate), 'dd MMM yyyy', { locale: fr })}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Clock className="h-4 w-4 text-blue-600" />
+                      <Clock className={`h-4 w-4 ${reservation.cancelledAt ? 'text-red-600' : 'text-green-600'}`} />
                       <span className="text-sm text-gray-600">
                         {reservation.timeSlot.startTime} - {reservation.timeSlot.endTime}
                       </span>
@@ -135,7 +135,12 @@ export default function ReservationsList({ initialData }: { initialData: Reserva
 
                   {/* Code */}
                   <div className="flex items-center gap-2">
-                    <code className="px-2 py-1 bg-blue-50 border border-blue-200 rounded text-xs font-mono font-medium text-blue-700">
+                    <code className={`px-2 py-1 rounded text-xs font-mono font-medium ${
+                        reservation.cancelledAt
+                          ? 'bg-red-50 border border-red-200 text-red-700'
+                          : 'bg-green-50 border border-green-200 text-green-700'
+                      }`}
+                    >
                       {reservation.cancellationCode}
                     </code>
                     <span className="text-xs text-gray-500">

@@ -1,14 +1,13 @@
 
 'use client'
 
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo } from 'react'
 import { format, addDays, startOfWeek, isSameDay } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import { ChevronLeft, ChevronRight, Loader2, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useWeekAvailability, useDayInfos, useTimeSlots } from './hooks'
 import { getAvailabilityKey, getAvailabilityStatus, isSlotDisabled } from './utils'
-import { DesktopWeekGrid } from './DesktopWeekGrid'
 import { MobileAccordion } from './MobileAccordion'
 import { FloatingConfirmButton } from './FloatingConfirmButton'
 import { TimeSlot } from '@prisma/client'

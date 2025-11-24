@@ -7,7 +7,7 @@ import { sendMagicLink } from '@/app/actions/magic-link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Card } from '@/components/ui/card'
-import { Mail, ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { Mail, ArrowLeft, CheckCircle2, AlertTriangle } from 'lucide-react'
 
 export default function MyReservationsLoginPage() {
   const [email, setEmail] = useState('')
@@ -28,7 +28,7 @@ export default function MyReservationsLoginPage() {
       } else {
         setError(result.error || 'Une erreur est survenue')
       }
-    } catch (err) {
+    } catch {
       setError('Une erreur est survenue')
     } finally {
       setLoading(false)
@@ -42,20 +42,32 @@ export default function MyReservationsLoginPage() {
           <div className="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6 animate-in zoom-in duration-300">
             <Mail className="w-10 h-10 text-blue-600" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-3">Vérifiez vos emails ! 📬</h1>
-          <p className="text-gray-600 mb-8 leading-relaxed">
-            Nous venons d'envoyer un lien de connexion sécurisé à <br/>
+          <h1 className="text-2xl font-bold text-gray-900 mb-3">Email envoyé ! 📬</h1>
+          <p className="text-gray-600 mb-6 leading-relaxed">
+            Nous venons d&apos;envoyer un lien de connexion sécurisé à <br/>
             <span className="font-semibold text-gray-900">{email}</span>
           </p>
-          
-          <div className="bg-blue-50 rounded-lg p-4 mb-8 text-sm text-blue-800 text-left flex gap-3">
-            <CheckCircle2 className="w-5 h-5 shrink-0 text-blue-600" />
+
+          <div className="bg-orange-50 border-l-4 border-orange-400 rounded-r-lg p-4 mb-6 text-left flex gap-3">
+            <AlertTriangle className="w-5 h-5 shrink-0 text-orange-600 mt-0.5" />
             <div>
-              <p className="font-semibold mb-1">Prochaines étapes :</p>
-              <ol className="list-decimal ml-4 space-y-1 text-blue-700">
-                <li>Ouvrez votre boîte mail</li>
-                <li>Cliquez sur le bouton "Voir mes réservations"</li>
-                <li>Accédez directement à votre espace</li>
+              <p className="font-bold text-orange-900 mb-1">⚠️ Vérifiez vos SPAMS</p>
+              <p className="text-sm text-orange-800 leading-relaxed">
+                L&apos;email peut arriver dans votre dossier <strong>Spam/Courrier indésirable</strong>.
+                Si vous ne le voyez pas dans votre boîte de réception, pensez à vérifier ce dossier.
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-blue-50 rounded-lg p-4 mb-6 text-sm text-blue-800 text-left flex gap-3">
+            <CheckCircle2 className="w-5 h-5 shrink-0 text-blue-600 mt-0.5" />
+            <div>
+              <p className="font-semibold mb-2">Comment accéder à vos réservations :</p>
+              <ol className="list-decimal ml-4 space-y-1.5 text-blue-700">
+                <li>Ouvrez votre boîte mail <strong>(vérifiez les spams !)</strong></li>
+                <li>Trouvez l&apos;email de Slotify</li>
+                <li>Cliquez sur le lien dans l&apos;email</li>
+                <li>Vous serez redirigé vers votre espace personnel</li>
               </ol>
             </div>
           </div>
@@ -75,12 +87,12 @@ export default function MyReservationsLoginPage() {
           <Button variant="ghost" size="sm" asChild className="mb-4 hover:bg-transparent pl-0 hover:text-blue-600">
             <Link href="/">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Retour à l'accueil
+              Retour à l&apos;accueil
             </Link>
           </Button>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Mes réservations</h1>
           <p className="text-gray-600">
-            Entrez votre email pour recevoir un lien d'accès sécurisé à votre espace personnel.
+            Entrez votre email pour recevoir un lien d&apos;accès sécurisé à votre espace personnel.
           </p>
         </div>
 

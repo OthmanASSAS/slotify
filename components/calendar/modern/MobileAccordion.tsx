@@ -9,7 +9,6 @@ import { fr } from 'date-fns/locale'
 import { ChevronDown, ChevronRight, Clock, Users, CheckCircle2 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import type { DayInfo, SlotDisplayInfo, TimeSlot } from './types'
-import { getAvailabilityBadgeConfig } from './utils'
 
 type MobileAccordionProps = {
   readonly dayInfos: DayInfo[]
@@ -108,7 +107,6 @@ export const MobileAccordion: React.FC<MobileAccordionProps> = ({
             {isOpen && slots.length > 0 && (
               <div className="border-t border-gray-200 bg-white/50 p-3 space-y-2 max-h-[400px] overflow-y-auto">
                 {slots.map(slot => {
-                  const badge = getAvailabilityBadgeConfig(slot.availabilityStatus)
 
                   return (
                     <button

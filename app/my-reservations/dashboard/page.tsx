@@ -61,7 +61,7 @@ export default async function DashboardPage({
           <div className="bg-red-50 border border-red-200 rounded-xl p-8">
             <h1 className="text-xl font-bold text-red-700 mb-2">Lien invalide ou expiré</h1>
             <p className="text-red-600 mb-6">
-              Votre lien de connexion n'est plus valide. Veuillez en demander un nouveau.
+              Votre lien de connexion n&apos;est plus valide. Veuillez en demander un nouveau.
             </p>
             <Button asChild>
               <Link href="/my-reservations">Retour à la connexion</Link>

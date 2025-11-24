@@ -8,7 +8,7 @@ import { fr } from 'date-fns/locale'
 import { cancelReservationById } from '@/app/actions/magic-link'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Calendar, Clock, AlertCircle, Trash2 } from 'lucide-react'
+import { Calendar, Clock, Trash2 } from 'lucide-react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -57,7 +57,7 @@ export default function ReservationsList({ initialReservations, token }: Reserva
       } else {
         alert('Erreur lors de l\'annulation: ' + result.error)
       }
-    } catch (error) {
+    } catch {
       alert('Une erreur est survenue')
     } finally {
       setCancellingId(null)
@@ -72,7 +72,7 @@ export default function ReservationsList({ initialReservations, token }: Reserva
         </div>
         <h3 className="text-xl font-semibold text-gray-900 mb-2">Aucune réservation à venir</h3>
         <p className="text-gray-500 max-w-sm mx-auto">
-          Vous n'avez pas de réservation prévue pour le moment. Réservez un créneau dès maintenant !
+          Vous n&apos;avez pas de réservation prévue pour le moment. Réservez un créneau dès maintenant !
         </p>
         <Button asChild className="mt-6 bg-blue-600 hover:bg-blue-700">
           <Link href="/">Réserver un créneau</Link>
@@ -117,7 +117,7 @@ export default function ReservationsList({ initialReservations, token }: Reserva
                       </h3>
                       {isToday && (
                         <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 mt-1">
-                          Aujourd'hui
+                          Aujourd&apos;hui
                         </span>
                       )}
                     </div>
@@ -159,7 +159,7 @@ export default function ReservationsList({ initialReservations, token }: Reserva
                         <AlertDialogDescription>
                           Êtes-vous sûr de vouloir annuler votre créneau du <strong>{format(date, 'd MMMM', { locale: fr })} à {reservation.timeSlot.startTime}</strong> ?
                           <br/><br/>
-                          Cette action est irréversible et libérera la place pour d'autres étudiants.
+                          Cette action est irréversible et libérera la place pour d&apos;autres étudiants.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>

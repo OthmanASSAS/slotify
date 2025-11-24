@@ -6,7 +6,6 @@ import { createReservation } from '@/app/actions/reservations'
 import { cancelReservationById } from '@/app/actions/magic-link'
 import { getPublicSlots } from '@/app/actions/slots'
 import { format } from 'date-fns'
-import { fr } from 'date-fns/locale'
 import { TimeSlot } from '@prisma/client'
 import { toast } from 'sonner'
 import {
@@ -78,7 +77,7 @@ export default function DashboardCalendar({ initialReservations, token, email, p
         // Afficher un message de confirmation
         if (preSelected.length > 0) {
           toast.success(`${preSelected.length} créneau${preSelected.length > 1 ? 'x' : ''} pré-sélectionné${preSelected.length > 1 ? 's' : ''} !`, {
-            description: "Vérifiez votre sélection et cliquez sur 'Confirmer' pour réserver."
+            description: 'Vérifiez votre sélection et cliquez sur « Confirmer » pour réserver.'
           })
         }
       }).catch(error => {
@@ -187,7 +186,7 @@ export default function DashboardCalendar({ initialReservations, token, email, p
         })
       }
 
-    } catch (error) {
+    } catch {
       toast.error("Erreur critique", { id: toastId })
     } finally {
       setIsSubmitting(false)
@@ -216,7 +215,7 @@ export default function DashboardCalendar({ initialReservations, token, email, p
           description: result.error || "Impossible d'annuler."
         })
       }
-    } catch (error) {
+    } catch {
       toast.error("Erreur", {
         description: "Une erreur est survenue."
       })
@@ -233,7 +232,7 @@ export default function DashboardCalendar({ initialReservations, token, email, p
           <h2 className="text-green-800 font-semibold mb-1">✅ Finalisez votre réservation</h2>
           <p className="text-sm text-green-700">
             Vos créneaux sont pré-sélectionnés (en <strong className="text-blue-600">bleu</strong>). 
-            Vérifiez-les et cliquez sur <strong>"Confirmer ma réservation"</strong> en bas de page pour finaliser.
+            Vérifiez-les et cliquez sur <strong>&quot;Confirmer ma réservation&quot;</strong> en bas de page pour finaliser.
           </p>
           <p className="text-xs text-green-600 mt-2">
             💡 Vous pouvez ajouter ou retirer des créneaux avant de confirmer.
@@ -244,7 +243,7 @@ export default function DashboardCalendar({ initialReservations, token, email, p
           <h2 className="text-blue-800 font-semibold mb-1">Comment ça marche ?</h2>
           <ul className="text-sm text-blue-700 space-y-1 list-disc list-inside">
             <li>Sélectionnez plusieurs créneaux <strong>blancs</strong> pour les réserver.</li>
-            <li>Cliquez sur un créneau <strong>vert</strong> (Moi) pour l'annuler immédiatement.</li>
+            <li>Cliquez sur un créneau <strong>vert</strong> (Moi) pour l&apos;annuler immédiatement.</li>
           </ul>
         </div>
       )}
@@ -302,7 +301,7 @@ export default function DashboardCalendar({ initialReservations, token, email, p
           <AlertDialogHeader>
             <AlertDialogTitle>Annuler ce créneau ?</AlertDialogTitle>
             <AlertDialogDescription>
-              Voulez-vous vraiment libérer votre place ? D'autres étudiants pourront la réserver.
+              Voulez-vous vraiment libérer votre place ? D&apos;autres étudiants pourront la réserver.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

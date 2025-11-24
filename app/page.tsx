@@ -32,10 +32,6 @@ export default function HomePage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
 
-  const handleSlotSelect = (slots: SelectedSlot[]) => {
-    setSelectedSlots(slots)
-  }
-
   const handleConfirmSelection = () => {
     if (selectedSlots.length === 0) {
       toast.error("Veuillez sélectionner au moins un créneau")
@@ -96,7 +92,7 @@ export default function HomePage() {
             <div>
               <h1 className="text-xl font-semibold text-gray-900">Slotify</h1>
               <p className="text-xs text-gray-500 hidden sm:block">
-                Réservation de salle d'étude
+                Réservation de salle d&apos;étude
               </p>
             </div>
           </div>
@@ -205,7 +201,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="border-t border-gray-200 bg-white mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-sm text-gray-500">
-          <p>Slotify - Plateforme de réservation de salle d'étude</p>
+          <p>Slotify - Plateforme de réservation de salle d&apos;étude</p>
         </div>
       </footer>
     </div>

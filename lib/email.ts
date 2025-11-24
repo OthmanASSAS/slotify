@@ -1,7 +1,23 @@
+'use server'
 
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy initialization to avoid build-time errors
+let resendInstance: Resend | null = null
+
+function getResend() {
+  if (!resendInstance) {
+    const apiKey = process.env.RESEND_API_KEY
+    if (!apiKey) {
+      throw new Error('RESEND_API_KEY is not defined')
+    }
+    resendInstance = new Resend(apiKey)
+  }
+  return resendInstance
+}
+
+// Email sender configuration
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'Slotify <onboarding@resend.dev>'
 
 /**
  * Envoie un email de confirmation de réservation
@@ -25,8 +41,8 @@ export async function sendReservationEmail(
   }).format(date)
 
   try {
-    const data = await resend.emails.send({
-      from: 'Slotify <onboarding@resend.dev>', // Domaine de test par défaut Resend
+    const data = await getResend().emails.send({
+      from: FROM_EMAIL,
       to: email,
       subject: 'Confirmation de votre réservation Slotify',
       html: `
@@ -93,8 +109,8 @@ export async function sendBulkReservationEmail(
     .join('')
 
   try {
-    const data = await resend.emails.send({
-      from: 'Slotify <onboarding@resend.dev>',
+    const data = await getResend().emails.send({
+      from: FROM_EMAIL,
       to: email,
       subject: `Confirmation de vos ${reservations.length} réservations Slotify`,
       html: `
@@ -135,24 +151,39 @@ export async function sendMagicLinkEmail(email: string, token: string) {
   const magicLink = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/my-reservations/dashboard?token=${token}`
 
   try {
-    const data = await resend.emails.send({
-      from: 'Slotify <onboarding@resend.dev>',
+    const data = await getResend().emails.send({
+      from: FROM_EMAIL,
       to: email,
       subject: 'Accédez à vos réservations Slotify',
       html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-          <h1 style="color: #2563eb;">Vos réservations 📅</h1>
-          <p>Bonjour,</p>
-          <p>Vous avez demandé à accéder à vos réservations. Cliquez sur le bouton ci-dessous pour les gérer :</p>
-          
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="${magicLink}" style="background-color: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px;">
-              Voir mes réservations
-            </a>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #ffffff;">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: #2563eb; margin: 0; font-size: 24px;">Slotify</h1>
+            <p style="color: #666; margin: 5px 0 0 0; font-size: 14px;">Système de réservation</p>
           </div>
 
-          <p style="color: #666; font-size: 14px;">Ce lien est valide pendant 1 heure.</p>
-          <p style="color: #666; font-size: 14px;">Si vous n'avez pas demandé cet email, vous pouvez l'ignorer.</p>
+          <h2 style="color: #1f2937; font-size: 20px; margin: 20px 0;">Accédez à vos réservations</h2>
+          <p style="color: #374151; line-height: 1.6; margin: 15px 0;">Bonjour,</p>
+          <p style="color: #374151; line-height: 1.6; margin: 15px 0;">
+            Vous avez demandé à consulter vos réservations de salle d'étude.
+            Pour y accéder, veuillez cliquer sur le lien ci-dessous :
+          </p>
+
+          <div style="margin: 30px 0; padding: 20px; background-color: #f9fafb; border-left: 4px solid #2563eb; border-radius: 4px;">
+            <p style="margin: 0 0 10px 0; color: #374151; font-weight: 600;">🔗 Votre lien d'accès personnel :</p>
+            <a href="${magicLink}" style="color: #2563eb; word-break: break-all; text-decoration: underline; font-size: 14px;">${magicLink}</a>
+          </div>
+
+          <div style="margin: 20px 0; padding: 15px; background-color: #fef3c7; border-radius: 4px; border: 1px solid #fbbf24;">
+            <p style="margin: 0; color: #92400e; font-size: 13px;">
+              ⏱️ <strong>Important :</strong> Ce lien expire dans 1 heure pour votre sécurité.
+            </p>
+          </div>
+
+          <p style="color: #6b7280; font-size: 13px; line-height: 1.5; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+            Si vous n'avez pas demandé cet email, vous pouvez l'ignorer en toute sécurité.<br/>
+            Cet email a été envoyé automatiquement, merci de ne pas y répondre.
+          </p>
         </div>
       `,
     })

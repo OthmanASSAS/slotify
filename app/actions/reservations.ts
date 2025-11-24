@@ -12,7 +12,7 @@ import {
   hasExistingReservation,
   getDayOfWeek,
 } from '@/lib/booking-utils'
-import { sendReservationEmail, sendBulkReservationEmail } from '@/lib/email'
+import { sendBulkReservationEmail } from '@/lib/email'
 
 /**
  * Type pour le résultat de la réservation

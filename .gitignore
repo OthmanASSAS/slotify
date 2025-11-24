@@ -45,3 +45,8 @@ next-env.d.ts
 # prisma database
 prisma/*.db
 prisma/*.db-journal
+
+# documentation locale
+DECISIONS_TECHNIQUES.md
+OBJECTIFS_BUSINESS.md
+JOURNAL_DE_BORD.md

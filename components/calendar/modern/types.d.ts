@@ -12,6 +12,8 @@ export type TimeSlot = {
   readonly endTime: string // Format "HH:mm"
   readonly maxCapacity: number
   readonly isActive: boolean
+  readonly createdAt: Date
+  readonly updatedAt: Date
 }
 
 export type SlotAvailability = {
@@ -39,6 +41,7 @@ export type SlotDisplayInfo = TimeSlot & {
   readonly isSelected: boolean
   readonly isDisabled: boolean
   readonly availabilityStatus: AvailabilityStatus
+  readonly isReservedByMe?: boolean
 }
 
 export type AvailabilityStatus = 'available' | 'limited' | 'full'

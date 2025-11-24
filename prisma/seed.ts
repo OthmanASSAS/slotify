@@ -17,6 +17,8 @@ async function main() {
     )
   }
 
+  console.log(`Debug: Admin Email from .env: ${adminEmail}`);
+
   // Delete existing admin to ensure a clean slate
   try {
     await prisma.admin.delete({ where: { email: adminEmail } });

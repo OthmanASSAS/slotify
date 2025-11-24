@@ -59,18 +59,29 @@ export async function getWeekAvailability(weekDates: Date[]) {
     const daySlots = slots.filter(s => s.dayOfWeek === dayOfWeek)
 
     for (const slot of daySlots) {
+      // Utiliser le même format que le frontend (YYYY-MM-DD) pour la clé
+      // Voir: components/calendar/modern/utils.ts -> getAvailabilityKey
       const year = date.getFullYear()
       const month = String(date.getMonth() + 1).padStart(2, '0')
       const day = String(date.getDate()).padStart(2, '0')
       const dateKey = `${year}-${month}-${day}`
+      
+      // dbDateKey est identique ici car on veut comparer avec la même logique
+      const dbDateKey = dateKey
+
       const key = `${slot.id}-${dateKey}`
 
       // Trouver le nombre de réservations pour ce créneau à cette date
-      const reservation = reservations.find(
-        r =>
-          r.timeSlotId === slot.id &&
-          startOfDay(new Date(r.reservationDate)).toISOString() === dateKey
-      )
+      // On compare les dates au format YYYY-MM-DD pour éviter les problèmes d'heure
+      const reservation = reservations.find(r => {
+        const resDate = new Date(r.reservationDate)
+        const resYear = resDate.getFullYear()
+        const resMonth = String(resDate.getMonth() + 1).padStart(2, '0')
+        const resDay = String(resDate.getDate()).padStart(2, '0')
+        const resDateKey = `${resYear}-${resMonth}-${resDay}`
+        
+        return r.timeSlotId === slot.id && resDateKey === dbDateKey
+      })
 
       const reservationCount = reservation?._count || 0
       const available = Math.max(0, slot.maxCapacity - reservationCount)

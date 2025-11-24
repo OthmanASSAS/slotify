@@ -12,6 +12,7 @@ import {
   hasExistingReservation,
   getDayOfWeek,
 } from '@/lib/booking-utils'
+import { sendReservationEmail, sendBulkReservationEmail } from '@/lib/email'
 
 /**
  * Type pour le résultat de la réservation
@@ -57,8 +58,15 @@ export async function createReservation(
     }
 
     // 3. Vérifier que le jour de la semaine correspond
-    const dayOfWeek = getDayOfWeek(date)
+    // On ajoute 12h pour éviter les problèmes de fuseau horaire (minuit UTC vs Local)
+    // Si la date est à minuit local (ex: 00:00 GMT+1), elle peut être 23:00 la veille en UTC
+    // En ajoutant 12h, on est sûr d'être le bon jour quel que soit le fuseau (dans une limite raisonnable)
+    const dateAtNoon = new Date(date)
+    dateAtNoon.setHours(12, 0, 0, 0)
+    const dayOfWeek = getDayOfWeek(dateAtNoon)
+    
     if (timeSlot.dayOfWeek !== dayOfWeek) {
+      console.log(`Mismatch: Slot Day ${timeSlot.dayOfWeek} vs Date Day ${dayOfWeek} (Date: ${date.toISOString()}, Noon: ${dateAtNoon.toISOString()})`)
       return {
         success: false,
         error: 'Le jour de la semaine ne correspond pas au créneau',
@@ -106,6 +114,9 @@ export async function createReservation(
       },
     })
 
+    // L'envoi d'email est maintenant géré de manière groupée par sendBulkReservationEmail
+    // Voir app/actions/reservations.ts -> sendBulkReservationEmail
+
     return {
       success: true,
       cancellationCode,
@@ -118,6 +129,41 @@ export async function createReservation(
       error: 'Erreur lors de la création de la réservation',
     }
   }
+}
+
+/**
+ * Vérifie les réservations existantes pour une liste de créneaux
+ */
+export async function checkExistingReservations(
+  email: string,
+  slots: { slotId: string; date: Date }[]
+): Promise<string[]> {
+  // 1. Trouver l'utilisateur
+  const allowedEmail = await prisma.allowedEmail.findUnique({
+    where: { email },
+  })
+
+  if (!allowedEmail) return []
+
+  const existingSlotIds: string[] = []
+
+  // 2. Vérifier chaque créneau
+  for (const slot of slots) {
+    const alreadyReserved = await hasExistingReservation(
+      email,
+      slot.slotId,
+      slot.date
+    )
+    
+    if (alreadyReserved) {
+      // On retourne une clé unique pour identifier le créneau réservé
+      // Format: slotId-YYYY-MM-DD
+      const dateKey = slot.date.toISOString().split('T')[0]
+      existingSlotIds.push(`${slot.slotId}-${dateKey}`)
+    }
+  }
+
+  return existingSlotIds
 }
 
 import { auth } from '@/auth'
@@ -186,5 +232,25 @@ export async function cancelReservation(
       success: false,
       error: 'Erreur lors de l\'annulation de la réservation',
     }
+  }
+}
+/**
+ * Envoie un email récapitulatif pour plusieurs réservations
+ */
+export async function sendBulkReservationEmailAction(
+  email: string,
+  reservations: {
+    date: Date
+    startTime: string
+    endTime: string
+    cancellationCode: string
+  }[]
+) {
+  try {
+    await sendBulkReservationEmail(email, reservations)
+    return { success: true }
+  } catch (error) {
+    console.error('Error sending bulk email:', error)
+    return { success: false, error: 'Erreur lors de l\'envoi de l\'email' }
   }
 }

@@ -60,3 +60,27 @@ model Reservation {
   @@index([reservationDate])
   @@index([cancellationCode])
 }
+
+// Magic links for passwordless authentication
+model MagicLink {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+}
+
+model PendingReservation {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  slots     Json     // Format: [{slotId: string, date: string}]
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([email])
+}
+

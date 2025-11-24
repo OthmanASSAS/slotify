@@ -144,6 +144,12 @@ export async function deleteSlot(id: string) {
     throw new Error('Non autorisé')
   }
 
+  // Supprimer d'abord les réservations associées
+  await prisma.reservation.deleteMany({
+    where: { timeSlotId: id },
+  })
+
+  // Puis supprimer le créneau
   await prisma.timeSlot.delete({
     where: { id },
   })

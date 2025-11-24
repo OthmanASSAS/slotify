@@ -117,7 +117,9 @@ export const MobileAccordion: React.FC<MobileAccordionProps> = ({
                       disabled={slot.isDisabled}
                       className={`
                         w-full p-3.5 rounded-xl border transition-all duration-200 text-left
-                        ${slot.isSelected
+                        ${slot.isReservedByMe
+                          ? 'border-emerald-300 bg-emerald-50 shadow-sm'
+                          : slot.isSelected
                           ? 'border-blue-400 bg-blue-50 shadow-sm'
                           : slot.isDisabled
                           ? 'border-gray-200/50 bg-gray-50/50 cursor-not-allowed opacity-60'
@@ -128,16 +130,23 @@ export const MobileAccordion: React.FC<MobileAccordionProps> = ({
                       <div className="flex items-center justify-between mb-2">
                         {/* Time */}
                         <div className="flex items-center gap-2">
-                          <Clock className={`h-4 w-4 ${slot.isSelected ? 'text-blue-600' : 'text-gray-500'}`} />
-                          <span className={`font-semibold text-base ${slot.isSelected ? 'text-gray-900' : 'text-gray-900'}`}>
+                          <Clock className={`h-4 w-4 ${slot.isReservedByMe ? 'text-emerald-600' : slot.isSelected ? 'text-blue-600' : 'text-gray-500'}`} />
+                          <span className={`font-semibold text-base ${slot.isReservedByMe || slot.isSelected ? 'text-gray-900' : 'text-gray-900'}`}>
                             {slot.startTime} - {slot.endTime}
                           </span>
                         </div>
 
-                        {/* Selected indicator */}
-                        {slot.isSelected && (
-                          <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                        )}
+                        {/* Indicators */}
+                        <div className="flex items-center gap-2">
+                          {slot.isReservedByMe && (
+                            <Badge className="bg-emerald-600 text-white hover:bg-emerald-700 border-emerald-500 text-xs">
+                              Moi
+                            </Badge>
+                          )}
+                          {slot.isSelected && !slot.isReservedByMe && (
+                            <CheckCircle2 className="h-5 w-5 text-blue-600" />
+                          )}
+                        </div>
                       </div>
 
                       {/* Availability */}
@@ -145,16 +154,10 @@ export const MobileAccordion: React.FC<MobileAccordionProps> = ({
                         <div className="flex items-center gap-2">
                           <Users className="h-4 w-4 text-gray-400" />
                           <span className="text-sm text-gray-600">
-                            Reste <span className="font-semibold text-gray-900">{slot.availability.available}</span>
-                            <span className="text-gray-400">/{slot.availability.capacity}</span>
+                            <span className="font-semibold text-gray-900">{slot.availability.available}</span>
+                            <span className="text-gray-400">/{slot.availability.capacity}</span> places
                           </span>
                         </div>
-
-                        {!slot.isDisabled && (
-                          <Badge className={`${badge.className} text-xs`}>
-                            {badge.icon}
-                          </Badge>
-                        )}
 
                         {slot.isDisabled && slot.availability.available === 0 && (
                           <Badge className="bg-rose-400 hover:bg-rose-500 text-white text-xs">

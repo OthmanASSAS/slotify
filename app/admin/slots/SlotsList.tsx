@@ -120,7 +120,7 @@ export default function SlotsList({ initialData }: { initialData: TimeSlot[] }) 
 
         <Button
           onClick={() => setShowAddDialog(true)}
-          className="bg-blue-600 hover:bg-blue-700 shadow-sm"
+          className="btn-primary-pastel"
           disabled={isPending}
         >
           <Plus className="h-4 w-4 mr-2" />
@@ -207,9 +207,9 @@ export default function SlotsList({ initialData }: { initialData: TimeSlot[] }) 
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Annuler</AlertDialogCancel>
-            <AlertDialogAction 
+            <AlertDialogAction
                           onClick={handleConfirmDelete}
-                          className="bg-red-400 hover:bg-red-500"
+                          className="btn-destructive-pastel"
                         >              Supprimer
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -311,7 +311,7 @@ export default function SlotsList({ initialData }: { initialData: TimeSlot[] }) 
               </Button>
               <Button
                 type="submit"
-                className="bg-blue-600 hover:bg-blue-700"
+                className="btn-primary-pastel"
                 disabled={isPending}
               >
                 {isPending ? 'Création...' : 'Créer les créneaux'}

@@ -213,7 +213,7 @@ export default function ReservationForm({ slots, onSuccess, onCancel }: Reservat
             <Button
               type="submit"
               disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 shadow-sm"
+              className="btn-primary-pastel"
             >
               {loading ? 'Réservation...' : 'Confirmer'}
             </Button>

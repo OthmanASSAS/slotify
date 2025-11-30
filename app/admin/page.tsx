@@ -93,7 +93,7 @@ export default function AdminLoginPage() {
 
             <button
               type="submit"
-              className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-sm disabled:opacity-50 mb-4"
+              className="w-full px-6 py-3 btn-primary-pastel rounded-lg transition disabled:opacity-50 mb-4"
               disabled={loading}
             >
               {loading ? 'Connexion...' : 'Se connecter'}

@@ -74,7 +74,7 @@ export default function ReservationsList({ initialReservations, token }: Reserva
         <p className="text-gray-500 max-w-sm mx-auto">
           Vous n&apos;avez pas de réservation prévue pour le moment. Réservez un créneau dès maintenant !
         </p>
-        <Button asChild className="mt-6 bg-blue-600 hover:bg-blue-700">
+        <Button asChild className="mt-6 btn-primary-pastel">
           <Link href="/">Réserver un créneau</Link>
         </Button>
       </div>
@@ -164,9 +164,9 @@ export default function ReservationsList({ initialReservations, token }: Reserva
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Garder ma place</AlertDialogCancel>
-                        <AlertDialogAction 
+                        <AlertDialogAction
                           onClick={() => handleCancel(reservation.id)}
-                          className="bg-red-600 hover:bg-red-700 text-white"
+                          className="btn-destructive-pastel"
                         >
                           Oui, annuler
                         </AlertDialogAction>

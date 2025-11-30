@@ -212,36 +212,36 @@ export const ModernCalendar: React.FC<CalendarProps> = ({
                     isPast
                       ? 'bg-gray-50 border-gray-200' // Style "Passé" - grisé
                       : isReservedByMe
-                      ? 'bg-emerald-50 border-emerald-200 shadow-sm' // Style "Ma réservation"
+                      ? 'bg-blue-50 border-blue-400 shadow-sm' // Style mobile pour "Ma réservation"
                       : isSelected
-                      ? 'bg-blue-600 border-blue-600 shadow-md transform scale-[0.98]' // Style "Sélectionné"
+                      ? 'bg-blue-50 border-blue-400 shadow-sm' // Style mobile - Bleu sélectionné
                       : isFull
-                      ? 'bg-gray-50 border-gray-200' // Style "Complet"
-                      : 'bg-white border-gray-100 hover:border-blue-200 hover:shadow-sm' // Style "Défaut"
+                      ? 'bg-gray-50 border-gray-200' // Gris pour complet
+                      : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm' // Gris par défaut, simple et épuré
                   }
                 `}
               >
                 {isFull && !isPast ? (
-                  <span className="text-xs font-medium text-gray-300 rotate-[-12deg]">Complet</span>
+                  <span className="text-xs font-medium text-gray-400 rotate-[-12deg]">Complet</span>
                 ) : isReservedByMe ? (
                   <>
-                    <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center">
-                      <Check className="w-3 h-3 text-emerald-600" />
+                    <div className="w-5 h-5 rounded-full bg-blue-100 flex items-center justify-center">
+                      <Check className="w-3 h-3 text-blue-600" />
                     </div>
-                    <span className="text-[10px] font-bold text-emerald-700">Moi</span>
+                    <span className="text-[10px] font-bold text-blue-600">Moi</span>
                   </>
                 ) : (
                   <>
                     <span
                       className={`text-xs font-bold ${
-                        isPast ? 'text-gray-400' : isSelected ? 'text-white' : 'text-gray-900'
+                        isPast ? 'text-gray-400' : isSelected ? 'text-blue-600' : 'text-gray-900'
                       }`}
                     >
                       {availableCount} place{availableCount > 1 ? 's' : ''}
                     </span>
                     <span
                       className={`text-[10px] ${
-                        isPast ? 'text-gray-300' : isSelected ? 'text-blue-100' : 'text-gray-400'
+                        isPast ? 'text-gray-300' : isSelected ? 'text-blue-500' : 'text-gray-500'
                       }`}
                     >
                       Dispo

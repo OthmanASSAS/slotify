@@ -50,10 +50,10 @@ export const FloatingConfirmButton: React.FC<FloatingConfirmButtonProps> = ({
       <div className="max-w-3xl mx-auto px-4 pb-4">
         <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
           {/* Compact header - collapsible summary */}
-          <div className="bg-blue-50 px-4 py-3 border-b border-gray-200">
+          <div className="bg-[hsl(var(--primary)/0.1)] px-4 py-3 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-[hsl(var(--primary))] flex items-center justify-center">
                   <CheckCircle2 className="h-4 w-4 text-white" />
                 </div>
                 <div>
@@ -86,7 +86,7 @@ export const FloatingConfirmButton: React.FC<FloatingConfirmButtonProps> = ({
             <Button
               onClick={onConfirm}
               size="lg"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-5 rounded-xl shadow-md transition-all"
+              className="w-full btn-primary-pastel font-semibold py-5 rounded-xl shadow-md"
             >
               Continuer vers la réservation
               <ChevronRight className="h-4 w-4 ml-2" />

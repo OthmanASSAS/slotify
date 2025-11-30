@@ -32,7 +32,7 @@ export default async function AdminDashboard() {
                 <Button
                   type="submit"
                   size="sm"
-                  className="bg-red-600 hover:bg-red-700 shadow-sm"
+                  className="btn-destructive-pastel"
                 >
                   <LogOut className="h-4 w-4 mr-2" />
                   <span className="hidden sm:inline">Déconnexion</span>

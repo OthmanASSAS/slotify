@@ -101,7 +101,7 @@ export default function CancelPage() {
 
               <button
                 type="submit"
-                className="w-full px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition disabled:opacity-50"
+                className="w-full px-6 py-3 btn-destructive-pastel rounded-lg transition disabled:opacity-50"
                 disabled={loading || !cancellationCode}
               >
                 {loading ? 'Annulation...' : 'Annuler ma réservation'}

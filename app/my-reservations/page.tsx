@@ -123,7 +123,7 @@ export default function MyReservationsLoginPage() {
               </div>
             )}
 
-            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={loading}>
+            <Button type="submit" className="w-full btn-primary-pastel" disabled={loading}>
               {loading ? 'Envoi en cours...' : 'Recevoir mon lien d\'accès'}
             </Button>
           </form>

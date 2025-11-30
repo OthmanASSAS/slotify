@@ -270,10 +270,10 @@ export default function DashboardCalendar({ initialReservations, token, email, p
               <div className="hidden md:block font-medium text-gray-900 text-sm">
                 {selectedSlots.length} créneau{selectedSlots.length > 1 ? 'x' : ''} sélectionné{selectedSlots.length > 1 ? 's' : ''}
               </div>
-              <button 
+              <button
                 onClick={handleBulkReservation}
                 disabled={isSubmitting}
-                className="flex-1 md:flex-none bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 md:py-2 rounded-full text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+                className="flex-1 md:flex-none btn-primary-pastel px-6 py-3 md:py-2 rounded-full text-sm font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
               >
                 {isSubmitting ? 'Validation...' : (
                   <>
@@ -306,7 +306,7 @@ export default function DashboardCalendar({ initialReservations, token, email, p
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Garder</AlertDialogCancel>
-            <AlertDialogAction onClick={confirmCancel} className="bg-red-600 hover:bg-red-700">
+            <AlertDialogAction onClick={confirmCancel} className="btn-destructive-pastel">
               Oui, annuler
             </AlertDialogAction>
           </AlertDialogFooter>

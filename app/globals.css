@@ -50,18 +50,31 @@
   --card-foreground: 240 10% 15%;
   --popover: 0 0% 100%;
   --popover-foreground: 240 10% 15%;
-  --primary: 262 85% 58%;
+
+  /* Palette moderne avec transparence */
+  --primary: 217 91% 60%; /* Bleu moderne lumineux */
   --primary-foreground: 0 0% 100%;
-  --secondary: 210 100% 97%;
-  --secondary-foreground: 240 10% 15%;
+  --secondary: 158 64% 52%; /* Vert émeraude moderne */
+  --secondary-foreground: 0 0% 100%;
   --muted: 250 50% 97%;
   --muted-foreground: 240 5% 50%;
-  --accent: 280 90% 97%;
-  --accent-foreground: 262 85% 40%;
-  --destructive: 353 100% 44%;
+  --accent: 262 80% 65%; /* Violet moderne */
+  --accent-foreground: 0 0% 100%;
+  --destructive: 350 89% 60%; /* Rose coral moderne */
+  --destructive-foreground: 0 0% 100%;
+
   --border: 250 30% 88%;
   --input: 250 30% 92%;
-  --ring: 262 85% 58%;
+  --ring: 217 91% 60%;
+
+  /* Couleurs calendrier avec transparence */
+  --success: 158 64% 52%; /* Vert émeraude */
+  --success-light: 158 64% 96%; /* Vert très léger */
+  --warning: 25 95% 53%; /* Orange moderne */
+  --warning-light: 25 95% 96%;
+  --info: 199 89% 48%; /* Bleu cyan */
+  --info-light: 199 89% 96%;
+
   --chart-1: 262 85% 58%;
   --chart-2: 173 80% 40%;
   --chart-3: 197 37% 24%;
@@ -118,5 +131,19 @@
   }
   .shadow-soft {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+  }
+
+  /* Boutons modernes avec transparence */
+  .btn-primary-pastel {
+    @apply bg-[hsl(var(--primary)/0.9)] text-white hover:bg-[hsl(var(--primary))] backdrop-blur-sm transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+  .btn-success-pastel {
+    @apply bg-[hsl(var(--success)/0.85)] text-white hover:bg-[hsl(var(--success))] backdrop-blur-sm transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+  .btn-destructive-pastel {
+    @apply bg-[hsl(var(--destructive)/0.85)] text-white hover:bg-[hsl(var(--destructive))] backdrop-blur-sm transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+  .btn-accent-pastel {
+    @apply bg-[hsl(var(--accent)/0.85)] text-white hover:bg-[hsl(var(--accent))] backdrop-blur-sm transition-all duration-200 shadow-sm hover:shadow-md;
   }
 }

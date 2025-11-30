@@ -43,15 +43,20 @@ export async function createPendingReservation(email: string, slots: PendingSlot
     })
 
     // 4. Envoyer l'email avec le magic link
+    console.log(`[PENDING] Envoi magic link à ${email} avec token ${token}`)
     const emailResult = await sendMagicLinkEmail(email, token)
 
+    console.log(`[PENDING] Résultat envoi email:`, emailResult)
+
     if (!emailResult.success) {
+      console.error('[PENDING] Échec envoi email:', emailResult.error)
       return {
         success: false,
         error: 'Erreur lors de l\'envoi de l\'email.'
       }
     }
 
+    console.log(`[PENDING] ✅ Email envoyé avec succès à ${email}`)
     return {
       success: true,
       message: 'Email envoyé ! Cliquez sur le lien pour finaliser votre réservation.'

@@ -129,10 +129,10 @@ export default function HomePage() {
       {/* Custom Floating Button for Email Collection */}
       {selectedSlots.length > 0 && (
         <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 z-[60]">
-          <Button 
+          <Button
             onClick={handleConfirmSelection}
             size="lg"
-            className="bg-blue-600 hover:bg-blue-700 text-white shadow-2xl"
+            className="btn-primary-pastel shadow-2xl"
           >
             Continuer ({selectedSlots.length} créneau{selectedSlots.length > 1 ? 'x' : ''})
           </Button>
@@ -169,9 +169,9 @@ export default function HomePage() {
                     />
                   </div>
                 </div>
-                <Button 
-                  type="submit" 
-                  className="w-full bg-blue-600 hover:bg-blue-700" 
+                <Button
+                  type="submit"
+                  className="w-full btn-primary-pastel"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Envoi en cours...' : 'Recevoir le lien de confirmation'}
@@ -187,6 +187,14 @@ export default function HomePage() {
               <p className="text-gray-600 mb-4">
                 Vérifiez votre boîte mail <strong>{email}</strong> et cliquez sur le lien pour finaliser votre réservation.
               </p>
+
+              <div className="bg-orange-50 border-l-4 border-orange-400 rounded-r-lg p-3 mb-4 text-left">
+                <p className="text-sm text-orange-900 font-medium mb-1">⚠️ Vérifiez vos SPAMS</p>
+                <p className="text-xs text-orange-800">
+                  L'email peut arriver dans votre dossier <strong>Spam/Courrier indésirable</strong>.
+                </p>
+              </div>
+
               <p className="text-sm text-gray-500 mb-6">
                 Le lien est valide pendant 1 heure.
               </p>

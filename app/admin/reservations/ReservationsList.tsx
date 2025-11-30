@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { SearchBar } from '@/components/ui/search-bar'
 import { Calendar, Clock, Mail } from 'lucide-react'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
@@ -28,17 +29,31 @@ const dayNames = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi',
 
 export default function ReservationsList({ initialData }: { initialData: Reservation[] }) {
   const [filter, setFilter] = useState<'all' | 'active' | 'cancelled'>('all')
+  const [searchQuery, setSearchQuery] = useState('')
 
-  const filteredReservations = initialData.filter(res => {
+  // D'abord filtrer par recherche
+  const searchFilteredData = initialData.filter(res => {
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase()
+      const matchesEmail = res.allowedEmail.email.toLowerCase().includes(query)
+      const matchesCode = res.cancellationCode.toLowerCase().includes(query)
+      return matchesEmail || matchesCode
+    }
+    return true
+  })
+
+  // Ensuite filtrer par statut
+  const filteredReservations = searchFilteredData.filter(res => {
     if (filter === 'active') return !res.cancelledAt
     if (filter === 'cancelled') return !!res.cancelledAt
     return true
   })
 
+  // Stats basées sur les résultats de la recherche
   const stats = {
-    total: initialData.length,
-    active: initialData.filter(r => !r.cancelledAt).length,
-    cancelled: initialData.filter(r => !!r.cancelledAt).length,
+    total: searchFilteredData.length,
+    active: searchFilteredData.filter(r => !r.cancelledAt).length,
+    cancelled: searchFilteredData.filter(r => !!r.cancelledAt).length,
   }
 
   return (
@@ -57,6 +72,16 @@ export default function ReservationsList({ initialData }: { initialData: Reserva
           <p className="text-sm text-gray-500">Annulées</p>
           <p className="text-3xl font-semibold text-red-600">{stats.cancelled}</p>
         </div>
+      </div>
+
+      {/* Search Bar */}
+      <div className="mb-6">
+        <SearchBar
+          value={searchQuery}
+          onChange={setSearchQuery}
+          placeholder="Rechercher par email ou code d'annulation..."
+          className="max-w-md"
+        />
       </div>
 
       {/* Filters */}

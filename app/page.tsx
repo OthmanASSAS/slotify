@@ -191,7 +191,7 @@ export default function HomePage() {
               <div className="bg-orange-50 border-l-4 border-orange-400 rounded-r-lg p-3 mb-4 text-left">
                 <p className="text-sm text-orange-900 font-medium mb-1">⚠️ Vérifiez vos SPAMS</p>
                 <p className="text-xs text-orange-800">
-                  L'email peut arriver dans votre dossier <strong>Spam/Courrier indésirable</strong>.
+                  L&apos;email peut arriver dans votre dossier <strong>Spam/Courrier indésirable</strong>.
                 </p>
               </div>
 

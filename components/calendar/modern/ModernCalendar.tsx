@@ -190,61 +190,65 @@ export const ModernCalendar: React.FC<CalendarProps> = ({
           const availableCount = slotInfo?.available ?? daySlot.maxCapacity
           const isFull = availableCount <= 0 && !isReservedByMe
 
+          // Vérifier si le créneau est passé
+          const slotDateTime = new Date(date)
+          const [hours, minutes] = daySlot.startTime.split(':').map(Number)
+          slotDateTime.setHours(hours, minutes, 0, 0)
+          const isPast = slotDateTime < new Date()
+
           return (
             <div
               key={`${dateKey}-${daySlot.id}`}
-              onClick={() => !isFull && handleSlotClick(daySlot, date, isReservedByMe)}
+              onClick={() => !isFull && !isPast && handleSlotClick(daySlot, date, isReservedByMe)}
               className={`
-                relative border-b border-r border-gray-100 h-[60px] p-1 transition-all duration-200 cursor-pointer group
-                ${isFull ? 'bg-gray-50 cursor-not-allowed' : 'hover:bg-blue-50/50'}
+                relative border-b border-r border-gray-100 h-[60px] p-1 transition-all duration-200
+                ${isPast ? 'bg-gray-100 cursor-not-allowed opacity-50' : isFull ? 'bg-gray-50 cursor-not-allowed' : 'hover:bg-blue-50/50 cursor-pointer group'}
               `}
             >
-              {!isFull && (
-                <div
-                  className={`
-                    w-full h-full rounded-lg border flex flex-col items-center justify-center gap-0.5 transition-all duration-300
-                    ${
-                      isReservedByMe
-                        ? 'bg-emerald-50 border-emerald-200 shadow-sm' // Style "Ma réservation"
-                        : isSelected
-                        ? 'bg-blue-600 border-blue-600 shadow-md transform scale-[0.98]' // Style "Sélectionné"
-                        : 'bg-white border-gray-100 hover:border-blue-200 hover:shadow-sm' // Style "Défaut"
-                    }
-                  `}
-                >
-                  {isReservedByMe ? (
-                    <>
-                      <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center">
-                        <Check className="w-3 h-3 text-emerald-600" />
-                      </div>
-                      <span className="text-[10px] font-bold text-emerald-700">Moi</span>
-                    </>
-                  ) : (
-                    <>
-                      <span
-                        className={`text-xs font-bold ${
-                          isSelected ? 'text-white' : 'text-gray-900'
-                        }`}
-                      >
-                        {availableCount} place{availableCount > 1 ? 's' : ''}
-                      </span>
-                      <span
-                        className={`text-[10px] ${
-                          isSelected ? 'text-blue-100' : 'text-gray-400'
-                        }`}
-                      >
-                        Dispo
-                      </span>
-                    </>
-                  )}
-                </div>
-              )}
-              
-              {isFull && (
-                <div className="w-full h-full flex items-center justify-center">
+              <div
+                className={`
+                  w-full h-full rounded-lg border flex flex-col items-center justify-center gap-0.5 transition-all duration-300
+                  ${
+                    isPast
+                      ? 'bg-gray-50 border-gray-200' // Style "Passé" - grisé
+                      : isReservedByMe
+                      ? 'bg-emerald-50 border-emerald-200 shadow-sm' // Style "Ma réservation"
+                      : isSelected
+                      ? 'bg-blue-600 border-blue-600 shadow-md transform scale-[0.98]' // Style "Sélectionné"
+                      : isFull
+                      ? 'bg-gray-50 border-gray-200' // Style "Complet"
+                      : 'bg-white border-gray-100 hover:border-blue-200 hover:shadow-sm' // Style "Défaut"
+                  }
+                `}
+              >
+                {isFull && !isPast ? (
                   <span className="text-xs font-medium text-gray-300 rotate-[-12deg]">Complet</span>
-                </div>
-              )}
+                ) : isReservedByMe ? (
+                  <>
+                    <div className="w-5 h-5 rounded-full bg-emerald-100 flex items-center justify-center">
+                      <Check className="w-3 h-3 text-emerald-600" />
+                    </div>
+                    <span className="text-[10px] font-bold text-emerald-700">Moi</span>
+                  </>
+                ) : (
+                  <>
+                    <span
+                      className={`text-xs font-bold ${
+                        isPast ? 'text-gray-400' : isSelected ? 'text-white' : 'text-gray-900'
+                      }`}
+                    >
+                      {availableCount} place{availableCount > 1 ? 's' : ''}
+                    </span>
+                    <span
+                      className={`text-[10px] ${
+                        isPast ? 'text-gray-300' : isSelected ? 'text-blue-100' : 'text-gray-400'
+                      }`}
+                    >
+                      Dispo
+                    </span>
+                  </>
+                )}
+              </div>
             </div>
           )
         })}
